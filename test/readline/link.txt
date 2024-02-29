@@ -1,0 +1,16 @@
+# **************************************************************************** #
+#                                                                              #
+#                                                         :::      ::::::::    #
+#    link.txt                                           :+:      :+:    :+:    #
+#                                                     +:+ +:+         +:+      #
+#    By: fmartini <marvin@42.fr>                    +#+  +:+       +#+         #
+#                                                 +#+#+#+#+#+   +#+            #
+#    Created: 2024/02/20 18:00:17 by fmartini          #+#    #+#              #
+#    Updated: 2024/02/20 18:00:19 by fmartini         ###   ########.fr        #
+#                                                                              #
+# **************************************************************************** #
+
+
+sito dove spiega come fare il file .supp
+
+https://wiki.wxwidgets.org/Valgrind_Suppression_File_Howto
