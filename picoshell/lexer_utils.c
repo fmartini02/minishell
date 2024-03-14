@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/02/28 15:59:13 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/02/29 17:44:40 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,7 +22,7 @@ char	*ft_sngl_q_case(char *s, int i)
 	i++;
 	q_len = ft_strlen_quote(s, i);
 	str = malloc (sizeof(char) * q_len);
-	while (s[i] != '39')
+	while (s[i] != 39)
 	{
 		str[j] = s[i];
 		j++;
@@ -35,22 +35,21 @@ char	*ft_db_q_case(char *s, int i, char **tok, int i_t)
 {
 	int		q_len;
 	int		j;
-	char	str;
+	char	*str;
 
 	j = 0;
 	i++;
 	q_len = ft_strlen_dquote(s, i);
 	str = malloc (sizeof (char) * q_len);
-	while (s[i] != '34')
+	while (s[i] != 34)
 	{
-		if (s[i] == '$')
-		{
-			tok[i_t] = ft_doll_case();
-			i_t++;
-		}
-		str[j] = s[i];
-		i++;
-		j++;
+		// if (s[i] == '$')
+		// {
+		// 	tok[i_t] = ft_doll_case();
+		// 	i_t++;
+		// }
+		str[j++] = s[i++];
+		tok[i_t++] = str;
 	}
 	return (str);
 }

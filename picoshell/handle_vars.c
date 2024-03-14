@@ -1,43 +1,30 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   strlens.c                                          :+:      :+:    :+:   */
+/*   handle_vars.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/02/28 15:57:12 by fmartini          #+#    #+#             */
-/*   Updated: 2024/02/29 17:45:25 by fmartini         ###   ########.fr       */
+/*   Created: 2024/03/01 16:09:39 by fmartini          #+#    #+#             */
+/*   Updated: 2024/03/01 16:10:02 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
-
-int	ft_strlen_quote(char *s, int i)
-{
-	int	len;
-
-	len = 0;
-	while (s[i] != 39)
-		len++;
-	return (len);
-}
-
-int	ft_strlen_dquote(char *s, int i)
-{
-	int	len;
-
-	len = 0;
-	while (s[i] != 34)
-		len++;
-	return (len);
-}
-
-int	ft_wlen(char *s, int i)
-{
-	int	len;
-
-	len = 0;
-	while(s[i] != ' ' || s[i] != '	')
-		len++;
-	return (len);
-}
+// char	*ft_find_var(char *s)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*buf;
+//
+// 	i = 0;
+// 	j = 0;
+// 	while (s[i] == ' ' || s[i] == '	')
+// 		i++;
+// 	buf = malloc(sizeof (char) * ft_wlen(s, i));
+// 	while(s[i] != ' ' || (s[i] != '	' && s[i]))
+// 		buf[j++] = s[i++];
+// 	if (strrchr(s, '='))
+// 	{
+// 		s = strchr(s, '=');
+// 	}
+// }

@@ -1,12 +1,28 @@
 # **************************************************************************** #
-#                                                                              #
-#                                                         :::      ::::::::    #
-#    Makefile                                           :+:      :+:    :+:    #
-#                                                     +:+ +:+         +:+      #
-#    By: fmartini <marvin@42.fr>                    +#+  +:+       +#+         #
-#                                                 +#+#+#+#+#+   +#+            #
-#    Created: 2024/02/27 15:26:08 by fmartini          #+#    #+#              #
-#    Updated: 2024/02/27 15:26:29 by fmartini         ###   ########.fr        #
-#                                                                              #
-# **************************************************************************** #
 
+NAME = picoshell
+
+SRC = pico_shell.c lexer_utils.c ft_init_sigs.c strlens.c signal_handling.c
+
+OBJ = $(SRC:.c=.o)
+
+CC = gcc
+
+CFLAGS = -Wall -Wextra -Werror -g
+
+LDFLAGS = -lreadline
+
+all: $(NAME)
+
+$(NAME): $(OBJ)
+	$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
+
+clean:
+	rm -f $(OBJ)
+fclean: clean
+	rm -f $(NAME)
+re: fclean all
+
+.PHONY: all clean fclean re
+
+# **************************************************************************** #
