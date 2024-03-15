@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/14 15:15:57 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/15 17:52:16 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	handle_signals(int signum)
 		sig_code = ctrl_z_case(signum);
 }
 
-void	ft_set_term(void)
+void	ft_set_raw(void)
 {
 	struct termios term;
 	tcgetattr(STDIN_FILENO, &term);
@@ -68,7 +68,7 @@ int     main()
 
 	ft_init_set(&my_set);
 	ft_add_sig_to_set(&my_set);
-	ft_set_term();
+	ft_set_raw();
 	sa.sa_handler = &handle_signals;
 	sa.sa_mask = my_set;
 	if (sigaction(SIGQUIT, &sa, NULL) == -1 ||

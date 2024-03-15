@@ -2,7 +2,7 @@
 
 NAME = picoshell
 
-SRC = pico_shell.c lexer_utils.c ft_init_sigs.c strlens.c signal_handling.c
+SRC = pico_shell.c lexer_utils.c ft_init_sigs.c strlens.c signal_handling.c ft_putstr_fd.c ft_putchar_fd.c
 
 OBJ = $(SRC:.c=.o)
 
