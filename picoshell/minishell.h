@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/15 17:43:33 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:32:34 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -41,6 +41,7 @@ int		ctrl_c_case(int signum);
 int		ctrl_z_case(int signum);
 int		ctrl_bckslash_case(int num);
 void	ft_set_raw(void);
-void
+void	ft_putstr_fd(char *s, int fd);
+void	ft_putchar_fd(char c, int fd);
 
 #endif

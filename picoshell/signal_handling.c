@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:10:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/15 17:56:50 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/15 18:36:36 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -27,20 +27,18 @@ void	ctrl_d_case(char *s)
 int	ctrl_c_case(int signum)
 {
 	write(1, "\n", 1);
-	rl_replace_line("", 0);
-	rl_on_new_line();
-	rl_redisplay();
+	write(1, "minishell$ ", 11);
 	return (signum);
 }
 int	ctrl_z_case(int signum)
 {
-	//ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
+	write (1, "minishell$   \b\b", 15);
 	return (signum);
 }
 
 int	ctrl_bckslash_case(int signum)
 {
-	//ft_putstr_fd("\b\b  \b\b", STDOUT_FILENO);
+	write (1, "minishell$   \b\b", 15);
 	return (signum);
 }
 
