@@ -1,38 +1,44 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   signal_handling.c                                  :+:      :+:    :+:   */
+/*   prova.c                                            :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 16:10:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/19 18:14:53 by fmartini         ###   ########.fr       */
+/*   Created: 2024/03/18 15:56:49 by fmartini          #+#    #+#             */
+/*   Updated: 2024/03/18 16:55:22 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ctrl_d_case(void)
+t_tok *createNode(void)
 {
-	printf("exit\n");
-	exit(EXIT_SUCCESS);
+	t_tok *newNode = (t_tok*)malloc(sizeof(t_tok));
+	if (newNode == NULL) {
+		perror("allocation failed");
+		exit(1);
+	}
+	newNode->line = ft_calloc(0,0);
+	newNode->next = NULL;
+	return newNode;
+}
+void freeList(t_tok *head)
+{
+	int i = 0;
+	while (head != NULL)
+	{
+		t_tok *temp = head;
+		head = head->next;
+		while (temp->line[i])
+		{
+			free(temp->line[i]);
+			i++;
+		}
+		i = 0;
+		free(temp->line);
+		free(temp);
+	}
 }
 
-int	ctrl_c_case(int signum)
-{
-	write(1, "\n", 1);
-	write(1, "minishell$ ", 11);
-	return (signum);
-}
-int	ctrl_z_case(int signum)
-{
-	write (1, "minishell$   \b\b", 15);
-	return (signum);
-}
-
-int	ctrl_bckslash_case(int signum)
-{
-	write (1, "minishell$   \b\b", 15);
-	return (signum);
-}
 

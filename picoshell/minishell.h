@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/15 18:32:34 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/19 18:14:25 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,15 +17,16 @@
 # include<stdlib.h>
 # include<signal.h>
 # include<termios.h>
+# include"libft/libft.h"
 # include<readline/readline.h>
 # include<readline/history.h>
 
 
-// typedef struct s_loc_var
-// {
-// 	char	*name;//nome variabile creata sulla shell
-// 	char	*content;//contenuto variabile da elaborare
-// }	t_loc_var;
+typedef struct s_tok
+{
+	char			**line;
+	struct s_tok	*next;
+}	t_tok;
 
 int		ft_wlen(char *s, int i);
 char	*ft_db_q_case(char *s, int i, char **tok, int i_t);
@@ -36,12 +37,16 @@ void	ft_init_set(sigset_t *my_set);
 int		ft_strlen_quote(char *s, int i);
 int		ft_strlen_dquote(char *s, int i);
 int		ft_wlen(char *s, int i);
-void	ctrl_d_case(char *s);
+void	ctrl_d_case(void);
 int		ctrl_c_case(int signum);
 int		ctrl_z_case(int signum);
 int		ctrl_bckslash_case(int num);
-void	ft_set_raw(void);
 void	ft_putstr_fd(char *s, int fd);
 void	ft_putchar_fd(char c, int fd);
+void	*ft_calloc(size_t nmemb, size_t size);
+void	ft_bzero(void *s, size_t n);
+int		ft_new_word(char *s, int i);
+int		ft_count_words(char *s);
+t_tok	*createNode(void);
 
 #endif

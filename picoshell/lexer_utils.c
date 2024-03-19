@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/02/29 17:44:40 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/19 15:41:15 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,11 +63,41 @@ char	*ft_word_case(char *s, int i)
 	j = 0;
 	w_len = ft_wlen(s, i);
 	str = malloc (sizeof(char) * w_len);
-	while (s[i] != ' ' || s[i] != '	')
+	while (s[i] != ' ' || s[i] != '\t')
 	{
 		str[j] = s[i];
 		i++;
 		j++;
 	}
 	return (str);
+}
+
+int	ft_count_words(char *s)
+{
+	int	i;
+	int	w_c;
+
+	i = 0;
+	w_c = 0;
+	while (*s)
+	{
+		while(*s == ' ' || *s == '\t')
+			s++;
+		while(*s && (*s != ' ' || *s != '\t'))
+		{
+			i++;
+			s++;
+		}
+		if (i)
+			w_c++;
+		i = 0;
+	}
+	return (w_c);
+}
+
+int	ft_new_word(char *s, int i)
+{
+	while ((s[i] != ' ' || s[i] != '\t') && s[i])
+		i++;
+	return (i);
 }
