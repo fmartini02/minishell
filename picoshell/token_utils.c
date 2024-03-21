@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prova.c                                            :+:      :+:    :+:   */
+/*   token_utils.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:56:49 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/18 16:55:22 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/21 15:36:54 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,14 +14,16 @@
 
 t_tok *createNode(void)
 {
-	t_tok *newNode = (t_tok*)malloc(sizeof(t_tok));
+	t_tok *newNode;
+
+	newNode = malloc(sizeof(t_tok));
 	if (newNode == NULL) {
 		perror("allocation failed");
 		exit(1);
 	}
 	newNode->line = ft_calloc(0,0);
 	newNode->next = NULL;
-	return newNode;
+	return (newNode);
 }
 void freeList(t_tok *head)
 {

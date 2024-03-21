@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/19 18:54:36 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/21 17:17:53 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,29 +15,27 @@
 
 volatile int sig_code = 0;
 
-void	handle_signals(int signum);
-
-char	**ft_lexer(char *s)
+char	**ft_lexer(const char *s)
 {
-	char	*tmp;
 	int		i;
 	char	**tok;
 	int		i_t;
 
-	tmp = s;
 	i = 0;
 	i_t = 0;
-	tok = malloc(sizeof(char *) * (ft_count_words(tmp) + 1));
-	while (tmp[i])
+	tok = malloc(sizeof(char *) * (ft_count_words(s) + 1));
+	if (!tok)
+		return (NULL);
+	while (s[i])
 	{
-		if (tmp[i] == 39)
-			tok[i_t] = ft_sngl_q_case(tmp, i);
-		else if (tmp[i] == 34)
-			tok[i_t] = ft_db_q_case(tmp, i, tok, i_t);
+		if (s[i] == 39)
+			tok[i_t] = ft_sngl_q_case(s, i);
+		else if (s[i] == 34)
+			tok[i_t] = ft_db_q_case(s, i);
 		else
-			tok[i_t] = ft_word_case(tmp, i);
+		 	tok[i_t] = ft_word_case(s, i);
 		i_t++;
-		i = ft_new_word(tmp, i);
+		i = ft_new_word(s, i);
 	}
 	return (tok);
 }
@@ -59,25 +57,15 @@ int     main()
 	struct sigaction	sa;
 	sigset_t			my_set;
 
-	inputs = createNode();
-	ft_init_set(&my_set);
-	ft_add_sig_to_set(&my_set);
-	sa.sa_handler = &handle_signals;
-	sa.sa_mask = my_set;
-	if (sigaction(SIGQUIT, &sa, NULL) == -1 ||
-		sigaction(SIGINT, &sa, NULL) == -1 ||
-		sigaction(SIGTSTP, &sa, NULL) == -1)
-	{
-		perror("sigaction");
-		exit(EXIT_FAILURE);
-	}
+	ft_initializer(&inputs, &my_set, &sa);
+	ft_signal_ear(&sa);
 	while (1)
 	{
 		s = readline("minishell$ ");
 		if (!s)
 			ctrl_d_case();
+		add_history(s);
 		inputs->line = ft_lexer(s);
 		inputs->next = createNode();
-		add_history(s);
 	}
 }

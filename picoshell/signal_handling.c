@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:10:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/19 18:14:53 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/20 11:21:59 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,6 +24,7 @@ int	ctrl_c_case(int signum)
 	write(1, "minishell$ ", 11);
 	return (signum);
 }
+
 int	ctrl_z_case(int signum)
 {
 	write (1, "minishell$   \b\b", 15);

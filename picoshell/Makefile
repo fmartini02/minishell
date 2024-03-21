@@ -8,7 +8,8 @@ SRC = pico_shell.c \
       strlens.c \
       signal_handling.c \
       ft_putstr_fd.c \
-      token_utils.c
+      token_utils.c \
+	  ft_initializer.c
 
 OBJ = $(SRC:.c=.o)
 
