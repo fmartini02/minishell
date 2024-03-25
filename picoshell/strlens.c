@@ -50,3 +50,28 @@ int ft_wlen(const char *s, int i)
 	}
 	return (len);
 }
+
+int ft_find_dq_len(const char *s, int i)
+{
+	int	str_len;
+	int	var_name_len;
+	int	var_cont_len;
+	int	j;
+
+	str_len = ft_strlen_dquote(s, i);
+	var_name_len = 0;
+	var_cont_len = 0;
+	j = 0;
+	while (j < str_len)
+	{
+		if (s[i + j] == '$')
+		{
+			var_name_len += ft_wlen(s, i + j);
+			var_cont_len += ft_strlen(ft_doll_case(s, i + j));
+			while (s[i + j] != ' '&& s[i + j])
+				j++;
+		}
+		j++;
+	}
+	return (str_len + var_cont_len - var_name_len);
+}

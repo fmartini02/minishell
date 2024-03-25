@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/21 17:17:53 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/22 15:32:55 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ char	**ft_lexer(const char *s)
 		else
 		 	tok[i_t] = ft_word_case(s, i);
 		i_t++;
-		i = ft_new_word(s, i);
+		while (s[i] != ' ' && s[i] != '\t' && s[i])
+		i++;
+		while ((s[i] == ' ' || s[i] == '\t') && s[i])
+		i++;
 	}
 	return (tok);
 }
@@ -50,7 +53,7 @@ void	handle_signals(int signum)
 		sig_code = ctrl_z_case(signum);
 }
 
-int     main()
+int	main()
 {
 	char				*s;
 	t_tok				*inputs;
