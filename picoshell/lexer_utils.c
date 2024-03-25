@@ -95,7 +95,7 @@ void	ft_dq_utils(char **str, const char *s, int *i, int *j)
 	char *doll_cont;
 
 	k = 0;
-	doll_cont = ft_doll_case(s, *i + *j);//getting var value
+	doll_cont = ft_doll_case((char*)s, *i + *j);//getting var value
 	while (doll_cont[k] != '\0')
 		*str[(*j)++] = doll_cont[k++];//swapping var name for var value
 	while (s[*i + *j] != ' ' && s[*i + *j])//skipping var name

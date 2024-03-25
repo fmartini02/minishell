@@ -38,7 +38,7 @@ int	ft_strlen_dquote(const char *s, int i)
 	return (len);
 }
 
-int ft_wlen(const char *s, int i)
+int	ft_wlen(const char *s, int i)
 {
 	int len;
 
@@ -51,7 +51,7 @@ int ft_wlen(const char *s, int i)
 	return (len);
 }
 
-int ft_find_dq_len(const char *s, int i)
+int	ft_find_dq_len(const char *s, int i)
 {
 	int	str_len;
 	int	var_name_len;
@@ -67,7 +67,7 @@ int ft_find_dq_len(const char *s, int i)
 		if (s[i + j] == '$')
 		{
 			var_name_len += ft_wlen(s, i + j);
-			var_cont_len += ft_strlen(ft_doll_case(s, i + j));
+			var_cont_len += ft_strlen(ft_doll_case((char *)s, i + j));
 			while (s[i + j] != ' '&& s[i + j])
 				j++;
 		}

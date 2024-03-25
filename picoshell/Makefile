@@ -13,7 +13,7 @@ SRC = pico_shell.c \
 
 OBJ = $(SRC:.c=.o)
 
-CC = gcc
+CC = cc
 
 CFLAGS = -Wall -Wextra -Werror -g
 
@@ -25,9 +25,10 @@ all: $(NAME)
 
 $(LIBFT):
 	@make -s -C ./libft
+	@make -s -C ./libft bonus
 
-$(NAME): $(OBJ)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LDFLAGS)
+$(NAME): $(OBJ) $(LIBFT)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
 
 %.o: %.c
 	@$(CC) -c $(CFLAG) -I. $< -o $@ -s

@@ -50,5 +50,7 @@ int		ft_count_words(const char *s);
 t_tok	*createNode(void);
 void	ft_signal_ear(struct sigaction *sa);
 void	ft_initializer(t_tok **inputs, sigset_t *my_set, struct sigaction *sa);
+int		ft_find_dq_len(const char *s, int i);
+char	*ft_doll_case(char *s, int i);
 
 #endif
