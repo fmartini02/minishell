@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 11:23:59 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/21 17:16:26 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/26 16:38:25 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,7 @@ void	ft_signal_ear(struct sigaction *sa)
 	int	signals[3] = {SIGINT, SIGQUIT, SIGTSTP};
 
 	i = 0;
-	while (i < (sizeof(signals) / sizeof(signals[0])))
+	while (i < (int)(sizeof(signals) / sizeof(signals[0])))
 	{
 		if (sigaction(signals[i], sa, NULL) == -1)
 		{

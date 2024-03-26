@@ -9,7 +9,8 @@ SRC = pico_shell.c \
       signal_handling.c \
       ft_putstr_fd.c \
       token_utils.c \
-	  ft_initializer.c
+	  ft_initializer.c \
+	  dollar_case_utils.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -31,7 +32,7 @@ $(NAME): $(OBJ) $(LIBFT)
 	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
 
 %.o: %.c
-	@$(CC) -c $(CFLAG) -I. $< -o $@ -s
+	@$(CC) -c $(CFLAGS) -I. $< -o $@ -s
 clean:
 	@rm -f $(OBJ)
 	@make -s -C libft clean
