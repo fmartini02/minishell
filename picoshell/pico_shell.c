@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/22 15:32:55 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/28 18:41:42 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,10 +58,11 @@ int	main()
 	char				*s;
 	t_tok				*inputs;
 	struct sigaction	sa;
-	sigset_t			my_set;
+	int					pipe_fd[2];
 
-	ft_initializer(&inputs, &my_set, &sa);
+	ft_initializer(&inputs,&sa);
 	ft_signal_ear(&sa);
+	pipe(pipe_fd);
 	while (1)
 	{
 		s = readline("minishell$ ");
@@ -69,6 +70,8 @@ int	main()
 			ctrl_d_case();
 		add_history(s);
 		inputs->line = ft_lexer(s);
+		inputs->str_line = s;
+		ft_pipe(inputs);
 		inputs->next = createNode();
 	}
 }

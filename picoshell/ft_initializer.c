@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 11:23:59 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/26 16:38:25 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/27 17:12:48 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,13 +14,35 @@
 
 void	handle_signals(int signum);
 
-void	ft_initializer(t_tok **inputs, sigset_t *my_set, struct sigaction *sa)
+void	ft_init_set(sigset_t *my_set)
 {
+	if (sigemptyset(my_set) == -1)
+		perror("sigemptyset failed");
+}
+
+void	ft_initializer(t_tok **inputs, struct sigaction *sa)
+{
+	sigset_t	my_set;
+
 	*inputs = createNode();
-	ft_init_set(my_set);
-	ft_add_sig_to_set(my_set);
+	ft_init_set(&my_set);
+	ft_add_sig_to_set(&my_set);
 	sa->sa_handler = &handle_signals;
-	sa->sa_mask = *my_set;
+	sa->sa_mask = my_set;
+}
+
+void	ft_add_sig_to_set(sigset_t *my_set)
+{
+	if (sigaddset(my_set, SIGINT) == -1)
+		perror("sigaddset failed");
+	if (sigaddset(my_set, SIGTERM) == -1)
+		perror("sigaddset failed");
+	if (sigaddset(my_set, SIGKILL) == -1)
+		perror("sigaddset failed");
+	if (sigaddset(my_set, SIGQUIT) == -1)
+		perror("sigaddset failed");
+	if (sigaddset(my_set, SIGTSTP) == -1)
+		perror("sigaddset failed");
 }
 
 void	ft_signal_ear(struct sigaction *sa)

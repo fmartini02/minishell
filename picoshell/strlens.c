@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:57:12 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/26 16:11:42 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/03/28 17:56:36 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,3 +51,12 @@ int	ft_word_len(const char *s, int i)
 	return (len);
 }
 
+int	ft_strlen_till_char(char *s, int i, char c)
+{
+	int	r;
+
+	r = 0;
+	while (s[i] && s[i] != c)
+		r++;
+	return (r);
+}
