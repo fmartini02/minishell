@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/28 18:41:42 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:50:20 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	handle_signals(int signum)
 		sig_code = ctrl_z_case(signum);
 }
 
-int	main()
+int	main(char **envp)
 {
 	char				*s;
 	t_tok				*inputs;
@@ -63,6 +63,7 @@ int	main()
 	ft_initializer(&inputs,&sa);
 	ft_signal_ear(&sa);
 	pipe(pipe_fd);
+	inputs->env = envp;
 	while (1)
 	{
 		s = readline("minishell$ ");
@@ -71,7 +72,7 @@ int	main()
 		add_history(s);
 		inputs->line = ft_lexer(s);
 		inputs->str_line = s;
-		ft_pipe(inputs);
+		ft_pipe(inputs, envp);
 		inputs->next = createNode();
 	}
 }

@@ -6,38 +6,56 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/28 18:45:06 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/04 17:56:02 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	**ft_get_cmds_names(t_tok *tok)
+char	*ft_extract_cmd_name(const char *s, int *i)
+{
+	int		tmp;
+	char	*name;
+
+	tmp = 0;
+	while(s[*i] !='\0' &&//if str_line still exist
+			(s[*i] == ' ' || s [*i] == '\t'))// cycle to skip spaces
+		i++;
+	name = malloc (sizeof (char) * ft_word_len(s, *i) + 1);// memory allocation for cmd name
+	if (!name)
+	{
+		perror("name memory allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	while(s[*i] != '\0' &&//check if line still exist
+		s[*i] != ' ' && s[*i] != '\t')// cycle to get cmd name
+		name[tmp++] = s[(*i)++];
+	name[tmp] = '\0';// putting end of string
+	//printf("%s\n", name);
+	return (name);
+}
+
+char	**ft_get_cmds_names_from_token(t_tok *tok)
 {
 	int		i;
-	int		tmp;
 	int		i_mat;
 	char	**cmds_name;
-	char	*name;
 
 	i_mat = 0;
 	i = 0;
-	tmp = 0;
-	cmds_name = malloc (sizeof (char *) * ft_count_cmds(tok));// memory allocation for cmds names
-	while (tok->str_line[i])
+	cmds_name = malloc (sizeof (char *) * (ft_count_cmds(tok) + 1));// memory allocation for cmds names
+	if (!cmds_name)//memory allocation check
 	{
-		while(tok->str_line[i] == ' ' || tok->str_line [i] == '\t')// cycle to skip spaces
-			i++;
-		name = malloc (sizeof (char) * ft_word_len(tok->str_line, i) + 1);// memory allocation for cmd name
-		while(tok->str_line[i] != ' ' && tok->str_line[i] != '\t')// cycle to get cmd name
-			name[tmp++] = tok->str_line[i++];
-		name[tmp] ='\0';// putting end of string
-		cmds_name[i_mat] = name;
-		i_mat++;
-		tmp = 0;
-		while (tok->str_line[i] != '|')// skipping till the '|' char
+		perror("cmds_name allocation failed");
+		exit(EXIT_FAILURE);
+	}
+	while (tok->str_line[i] != '\0')
+	{
+		cmds_name[i_mat++] = ft_extract_cmd_name(tok->str_line, &i);
+		while (tok->str_line[i] != '|' && tok->str_line[i] != '\0')// skipping till the '|' char
 			i++;
 	}
+	cmds_name[i_mat] = '\0';
 	return (cmds_name);
 }
 
@@ -59,33 +77,76 @@ char	**ft_get_cmds_args(t_tok *tok)
 		args = malloc (sizeof (char) * ft_strlen_till_char(tok->str_line, i, '|'));//allocating memory for the string of arguments
 		while (tok->str_line[i] && tok->str_line[i] != '|')//copying till the char '|'
 			args[j++] = tok->str_line[i++];
+		args[j] = '\0';
 		cmds_args[i_mat] = args;
 		i_mat++;
 		j = 0;
-		if (tok->str_line[i] == '|')//checking if the string is finished, if it isn't skip '|'
+		if (tok->str_line[i] != '\0' && tok->str_line[i] == '|')//checking if the string is finished, if it isn't skip '|'
 			i++;
 	}
+	cmds_args[i_mat] = '\0';
 	return (cmds_args);
 }
 
-void	ft_pipe(t_tok *tok)
+char	*get_cmd_path(char **paths, char *cmd)
 {
-	int		pipe_fd[2];
-	pid_t	pid;
+	char	*tmp;
+	char	*command;
 
-	tok->cmds = ft_get_cmds_names(tok);
+	while (*paths)
+	{
+		tmp = ft_strjoin(*paths, "/");
+		command = ft_strjoin(tmp, cmd);
+		free(tmp);
+		if (access(command, 0) == 0)
+			return (command);
+		free(command);
+		paths++;
+	}
+	return (NULL);
+}
+
+void	ft_pipe(t_tok *tok, char **env)
+{
+	int		pip[2];
+	char	*path;
+	pid_t	pid;
+	int		i;
+	int		n_cmds;
+
+	tok->cmds = ft_get_cmds_names_from_token(tok);
 	tok->cmds_args = ft_get_cmds_args(tok);
-	pipe(pipe_fd);
+	path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);//get path var value, split for each path, testing paths, return working path
+	i = 0;
+	n_cmds = ft_mat_len(tok->cmds);
+	pipe(pip);
+	pid = fork();
+	if(pid < 0)
+	{
+		perror("fork failed");
+		exit(EXIT_FAILURE);
+	}
+	else if (pid == 0)
+		ft_first_child(tok, pip, i, env);
+	i++;
+	while(i < n_cmds - 1)
+	{
+		pid = fork();
+		if (pid < 0)
+		{
+			perror("fork failed");
+			exit(EXIT_FAILURE);
+		}
+		else if (pid == 0)
+			ft_succ_childs(tok, pip, i, env);
+		i++;
+	}
 	pid = fork();
 	if (pid < 0)
 	{
 		perror("fork failed");
 		exit(EXIT_FAILURE);
 	}
-	if (pid == 0)
-	{
-		close(pipe_fd[0]);//closing read_end pipe
-		dup2(pipe_fd[1], 1);//duplicating in the stdin the write_end pipe
-		close(pipe_fd[1]);//closing write_end of pipe(fd 4 not 1)
-	}
+	else if (pid == 0)
+		ft_last_child(tok, pip, i, env);
 }

@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/28 18:45:10 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:48:37 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,12 +22,19 @@
 # include<readline/readline.h>
 # include<readline/history.h>
 
+enum pipe_macro
+{
+	READ_END,
+	WRITE_END
+};
+
 typedef struct s_tok
 {
 	char			**line;
 	char			*str_line;
 	struct s_tok	*next;
 	char			**cmds;
+	char			**env;
 	char			**cmds_args;
 }	t_tok;
 

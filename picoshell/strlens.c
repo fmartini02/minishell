@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:57:12 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/28 17:56:36 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/04 15:28:39 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,7 +56,20 @@ int	ft_strlen_till_char(char *s, int i, char c)
 	int	r;
 
 	r = 0;
-	while (s[i] && s[i] != c)
+	while (s[i] != '\0' && s[i] != c)
+	{
 		r++;
+		i++;
+	}
 	return (r);
+}
+
+int	ft_matlen(char **s)
+{
+	int	i;
+
+	i = 0;
+	while(s[i] != '\0')
+		i++;
+	return (i);
 }
