@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   prova.c                                            :+:      :+:    :+:   */
+/*   aborti.c                                           :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:14:11 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/03 17:09:57 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:32:45 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -100,3 +100,63 @@ int main()
 	}
 	return 0;
 }
+
+char *const	*ft_exec_args(char *path, char *args)
+{
+	int				i;
+	int				y;
+	int				j;
+	char *const		*exec_args;
+	char			*tmp;
+
+	i = j = y = 0;
+	exec_args = exec_args = malloc(sizeof(char *) * (ft_count_words((const char *)args) + 2));//+2 (path + null)
+	tmp = malloc (sizeof(char) * (ft_strlen_till_char(path, i, ' ') + 1));
+	if (!tmp || !exec_args)
+	{
+		perror("tmp or exec_args memory allocation in ft_exec_args failed");
+		exit(EXIT_FAILURE);
+	}
+	while(path[i])
+		tmp[y++] = path[i++];
+	tmp[y] = '\0';
+	exec_args[j++] = tmp;
+	i = y = 0;
+	while (args[i])
+	{
+		while(args[i] == ' ' || args[i] == '\t')
+			i++;
+		if (args[i])
+			tmp =  malloc (sizeof(char) * (ft_strlen_till_char(args, i, ' ') + 1));
+		if (!tmp)
+		{
+			perror("tmp memory allocation in ft_exec_args failed");
+			exit(EXIT_FAILURE);
+		}
+		while(args[i] != ' ' && args[i] != '\t')
+			tmp[y++] = args[i++];
+		tmp[y] = '\0';
+		exec_args[j++] = tmp;
+		y = 0;
+	}
+	return (exec_args);
+}
+
+// char	*ft_find_var(char *s)
+// {
+// 	int		i;
+// 	int		j;
+// 	char	*buf;
+//
+// 	i = 0;
+// 	j = 0;
+// 	while (s[i] == ' ' || s[i] == '	')
+// 		i++;
+// 	buf = malloc(sizeof (char) * ft_wlen(s, i));
+// 	while(s[i] != ' ' || (s[i] != '	' && s[i]))
+// 		buf[j++] = s[i++];
+// 	if (strrchr(s, '='))
+// 	{
+// 		s = strchr(s, '=');
+// 	}
+// }

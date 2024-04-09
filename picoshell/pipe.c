@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/04 17:56:02 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:43:20 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	**ft_get_cmds_args(t_tok *tok)
 	cmds_args = malloc (sizeof (char *) *ft_count_args_str(tok));// allocating memory for as many strings of arguments present
 	while (tok->str_line[i])
 	{
-		i = ft_skip(tok, i);//skipping spaces and the first word
+		i = ft_skip_spaces(tok->str_line, i);//skipping spaces
 		args = malloc (sizeof (char) * ft_strlen_till_char(tok->str_line, i, '|'));//allocating memory for the string of arguments
 		while (tok->str_line[i] && tok->str_line[i] != '|')//copying till the char '|'
 			args[j++] = tok->str_line[i++];
@@ -109,44 +109,19 @@ char	*get_cmd_path(char **paths, char *cmd)
 void	ft_pipe(t_tok *tok, char **env)
 {
 	int		pip[2];
-	char	*path;
 	pid_t	pid;
 	int		i;
-	int		n_cmds;
 
 	tok->cmds = ft_get_cmds_names_from_token(tok);
 	tok->cmds_args = ft_get_cmds_args(tok);
-	path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);//get path var value, split for each path, testing paths, return working path
 	i = 0;
-	n_cmds = ft_mat_len(tok->cmds);
 	pipe(pip);
-	pid = fork();
-	if(pid < 0)
-	{
-		perror("fork failed");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-		ft_first_child(tok, pip, i, env);
-	i++;
-	while(i < n_cmds - 1)
+	while (i < ft_matlen((void **)tok->cmds) - 1)
 	{
 		pid = fork();
 		if (pid < 0)
-		{
-			perror("fork failed");
-			exit(EXIT_FAILURE);
-		}
+			ft_perror(tok, "fork failed", 1);
 		else if (pid == 0)
-			ft_succ_childs(tok, pip, i, env);
-		i++;
+			ft_pipe_utils(tok, pip, &i, env);
 	}
-	pid = fork();
-	if (pid < 0)
-	{
-		perror("fork failed");
-		exit(EXIT_FAILURE);
-	}
-	else if (pid == 0)
-		ft_last_child(tok, pip, i, env);
 }

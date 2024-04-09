@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/04 15:50:20 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/08 10:43:54 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,7 @@ void	handle_signals(int signum)
 		sig_code = ctrl_z_case(signum);
 }
 
-int	main(char **envp)
+int	main(int ac, char **av, char **envp)
 {
 	char				*s;
 	t_tok				*inputs;
@@ -63,6 +63,8 @@ int	main(char **envp)
 	ft_initializer(&inputs,&sa);
 	ft_signal_ear(&sa);
 	pipe(pipe_fd);
+	(void)ac;
+    (void)av;
 	inputs->env = envp;
 	while (1)
 	{

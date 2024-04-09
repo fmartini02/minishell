@@ -4,14 +4,14 @@ NAME = picoshell
 
 SRC = pico_shell.c \
       lexer_utils.c \
-      strlens.c \
       signal_handling.c \
-      ft_putstr_fd.c \
       token_utils.c \
 	  ft_initializer.c \
 	  dollar_case_utils.c \
 	  pipe.c \
-	  pipe_utils.c
+	  pipe_utils.c \
+	  pipe_utils_2.c \
+	  ft_errors.c
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:08:24 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/26 17:47:00 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/09 16:36:46 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,7 @@ int	ft_find_dq_len(const char *s, int i)
 	int	var_cont_len;
 	int	j;
 
-	str_len = ft_strlen_dquote(s, i);//len of string without var content
+	str_len = ft_strlen_till_char((char*)s, i, '"');//len of string without var content
 	var_name_len = 0;//len of var name
 	var_cont_len = 0;//len of var content
 	j = 0;

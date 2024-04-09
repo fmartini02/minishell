@@ -1,30 +1,37 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   handle_vars.c                                      :+:      :+:    :+:   */
+/*   ft_errors.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/01 16:09:39 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/01 16:10:02 by fmartini         ###   ########.fr       */
+/*   Created: 2024/04/08 15:57:26 by fmartini          #+#    #+#             */
+/*   Updated: 2024/04/09 16:54:42 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-// char	*ft_find_var(char *s)
-// {
-// 	int		i;
-// 	int		j;
-// 	char	*buf;
-//
-// 	i = 0;
-// 	j = 0;
-// 	while (s[i] == ' ' || s[i] == '	')
-// 		i++;
-// 	buf = malloc(sizeof (char) * ft_wlen(s, i));
-// 	while(s[i] != ' ' || (s[i] != '	' && s[i]))
-// 		buf[j++] = s[i++];
-// 	if (strrchr(s, '='))
-// 	{
-// 		s = strchr(s, '=');
-// 	}
-// }
+#include "minishell.h"
+
+void ft_free_mem(t_tok *tok)
+{
+	int i;
+
+	i = 0;
+	while (tok->cmds[i])
+	{
+		free(tok->cmds[i]);
+		free(tok->cmds_args[i]);
+		i++;
+	}
+	free(tok->cmds);
+	free(tok->cmds_args);
+	free(tok->str_line);
+}
+
+void	ft_perror(t_tok *tok, char *s, int flag)
+{
+	perror(s);
+	if (flag)
+		ft_free_mem(tok);
+	exit(EXIT_FAILURE);
+}

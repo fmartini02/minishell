@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:30:54 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/04 18:07:40 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/09 17:43:30 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,61 +52,68 @@ int	ft_count_args_str(t_tok *tok)
 	return (tmp);
 }
 
-int	ft_skip(t_tok *tok, int i)
+int	ft_give_num_args(char *line, int i)
 {
-	while(tok->str_line[i] == ' ' || tok->str_line [i] == '\t')// cycle to skip spaces
-		i++;
-	while(tok->str_line[i] && (tok->str_line[i] != ' ' && tok->str_line[i] != '\t'))//cycle to skip first word
-		i++;
-	return(i);
+	int	tmp;
+
+	tmp = 0;
+	while(line[i] && (line[i] != '|'))// cycle to count args
+	{
+		while(line[i] && (line[i] == ' ' || line[i] == '\t'))// skipping spaces
+			i++;
+		while(line[i] && (line[i] != ' ' && line[i] != '\t'))// counting args
+		{
+			tmp++;
+			while(line[i] && (line[i] != ' ' && line[i] != '\t'))// skipping args
+				i++;
+		}
+	}
+	return (tmp);
 }
 
-void	ft_first_child(t_tok *tok, int *pipe, int i, char **env)
+void	ft_pipe_utils(t_tok *tok, int *pip, int *i, char **env)
 {
-	char	*path;
-
-	path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
-	if (dup2(pipe[WRITE_END], STDOUT_FILENO) == -1)
+	while (1)
 	{
-		perror("dup2 failed");
-		exit(EXIT_FAILURE);
+		if (ft_matlen((void**)tok->cmds) == 1) //if there is only one command
+		{
+			ft_last_child(tok, pip, *i, env);
+			break;
+		}
+		else if (*i == 0)
+			ft_first_child(tok, pip, *i, env);
+		else if (*i < (ft_matlen((void**)tok->cmds) - 1))
+			ft_succ_childs(tok, pip, *i, env);
+		else
+		{
+			ft_last_child(tok, pip, *i, env);
+			break;
+		}
+		(*i)++;
 	}
-	close(pipe[0]);
-	close(pipe[1]);
-	execve(path, tok->cmds_args[i], env);
-	perror("execve failed");
-	exit(EXIT_FAILURE);
 }
 
-void	ft_succ_childs(t_tok *tok, int *pipe, int i, char **env)
+char *const *ft_exec_args(char *args, t_tok *tok)
 {
-	char	*path;
+	char	**exec;
+	char	*tmp;
+	int		i;
+	int		y;
 
-	path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
-	if (dup2(pipe[READ_END], STDIN_FILENO) == -1 || dup2(pipe[WRITE_END], STDOUT_FILENO) == -1)
+	i = 0;
+	y = 0;
+	exec = malloc(sizeof(char *) * ft_give_num_args(args, 0) + 1);// memory allocation for exec args
+	if (!exec)
+		ft_perror(tok, "exec memory allocation failed", 1);
+	while (args[i])
 	{
-		perror("dup2 failed");
-		exit(EXIT_FAILURE);
+		i = ft_skip_spaces(args, i);
+		tmp = malloc(sizeof(char) * ft_strlen_till_char(args, 0, ' ') + 1);// memory allocation for tmp
+		if (!tmp)
+			ft_perror(tok, "tmp (ft_exec_args) memory allocation failed", 1);
+		tmp = ft_strcpy_till_char(tmp, args, i, ' ');// copying args in tmp
+		exec[y++] = tmp;// putting args in exec
 	}
-	close(pipe[0]);
-	close(pipe[1]);
-	execve(path, tok->cmds_args[i], env);
-	perror("execve failed");
-	exit(EXIT_FAILURE);
-}
-void	ft_last_child(t_tok *tok, int *pipe, int i, char ** env)
-{
-	char	*path;
-
-	path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
-	if (dup2(pipe[READ_END], STDIN_FILENO) == -1)
-	{
-		perror("dup2 failed");
-		exit(EXIT_FAILURE);
-	}
-	close(pipe[0]);
-	close(pipe[1]);
-	execve(path, tok->cmds_args[i], env);
-	perror("execve failed");
-	exit(EXIT_FAILURE);
+	exec[y] = NULL;
+	return ((char*const*)exec);
 }
