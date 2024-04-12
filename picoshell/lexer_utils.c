@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/26 17:49:31 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/10 18:37:17 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,24 +57,18 @@ char	*ft_db_q_case(const char *s, int i)
 	return (str);
 }
 
-char *ft_word_case(const char *s, int i)
+char *ft_normal_case(const char *s, int i)
 {
-	if (s == NULL || s[i] == '\0')
-		return NULL;
-	while (s[i] != '\0' && (s[i] == ' ' || s[i] == '\t'))
-		i++;
 	int j;
 	int k;
-	int	word_len;
 
 	k = i;
 	j = 0;
-	word_len = ft_word_len(s, i);
 	i = k;
-	char *str = (char *)malloc(sizeof(char) * (word_len + 1));
+	char *str = (char *)malloc(sizeof(char) * (ft_strlen(s)+ 1));
 	if (!str)
 		return NULL;
-	while (s[i] != '\0' && s[i] != ' ' && s[i] != '\t')
+	while (s[i] != '\0' && (s[i] != '"' && s[i] != 39))
 		str[j++] = s[i++];
 	str[j] = '\0';
 	return (str);
@@ -97,3 +91,18 @@ int ft_count_words(const char *s)
 	return (word_count);
 }
 
+int	ft_line_len(const char *s)
+{
+	int i;
+	int len;
+
+	i = 0;
+	len = 0;
+	while (s[i])
+	{
+		if (s[i] == '"')
+			len += ft_strlen(ft_db_q_case(s, i));
+		i++;
+	}
+	return (len);
+}

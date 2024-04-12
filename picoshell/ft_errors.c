@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:57:26 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/09 16:54:42 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/10 17:40:46 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,18 +14,24 @@
 
 void ft_free_mem(t_tok *tok)
 {
-	int i;
+	int i = 0;
+	t_tok *tmp;
 
-	i = 0;
-	while (tok->cmds[i])
+	while (tok != NULL)
 	{
-		free(tok->cmds[i]);
-		free(tok->cmds_args[i]);
-		i++;
+		tmp = tok;
+		tok = tok->next;
+		free(tmp->str_line);
+		while (tmp->cmds[i])
+		{
+			free(tmp->cmds[i]);
+			free(tmp->cmds_args[i]);
+			i++;
+		}
+		free(tmp->cmds);
+		free(tmp->cmds_args);
+		free(tmp);
 	}
-	free(tok->cmds);
-	free(tok->cmds_args);
-	free(tok->str_line);
 }
 
 void	ft_perror(t_tok *tok, char *s, int flag)

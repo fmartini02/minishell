@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:56:49 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/21 15:36:54 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/10 17:27:40 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,26 +21,8 @@ t_tok *createNode(void)
 		perror("allocation failed");
 		exit(1);
 	}
-	newNode->line = ft_calloc(0,0);
 	newNode->next = NULL;
 	return (newNode);
-}
-void freeList(t_tok *head)
-{
-	int i = 0;
-	while (head != NULL)
-	{
-		t_tok *temp = head;
-		head = head->next;
-		while (temp->line[i])
-		{
-			free(temp->line[i]);
-			i++;
-		}
-		i = 0;
-		free(temp->line);
-		free(temp);
-	}
 }
 
 
