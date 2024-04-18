@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/10 18:37:17 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:56:49 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,7 +53,6 @@ char	*ft_db_q_case(const char *s, int i)
 		j++;
 	}
 	str[j] = '\0';
-	//printf("str: %s\n", str);
 	return (str);
 }
 

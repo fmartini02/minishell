@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/18 15:56:49 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/10 17:27:40 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/18 11:29:32 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,5 +24,3 @@ t_tok *createNode(void)
 	newNode->next = NULL;
 	return (newNode);
 }
-
-

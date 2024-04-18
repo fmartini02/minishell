@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:30:54 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/12 19:39:59 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/18 16:54:39 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -43,6 +43,38 @@ int	ft_args_strlen(t_tok *tok)
 		tmp++;
 	}
 	return (tmp);
+}
+
+char	**parse_tokens(t_tok *tok, char **args_mat, int *i, int *i_mat)
+{
+	int		j;
+	char	*args;
+
+	j = 0;
+	while (tok->str_line[*i])
+	{
+		args = malloc(sizeof(char) * ft_strlen_till_char(tok->str_line, *i, ' ') + 1);
+		if (!args)
+			ft_perror(tok, "malloc error in parse_tokens", 1);
+		while (tok->str_line[*i] && tok->str_line[*i] != '|' && tok->str_line[*i] != ' ')
+			args[j++] = tok->str_line[(*i)++];
+		if (j != 0)
+		{
+			args[j] = '\0';
+			args_mat[(*i_mat)++] = args;
+		}
+		j = 0;
+		if (tok->str_line[*i] != '\0' && tok->str_line[*i] == '|')
+		{
+			args_mat[*i_mat] = NULL;
+			(*i)++;
+			break;
+		}
+		if (!tok->str_line[*i])
+			break;
+		(*i)++;
+	}
+	return (args_mat);
 }
 
 void	ft_pipe_utils(t_tok *tok, int *pip, int i, char *path, char **args, char **env)
