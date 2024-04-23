@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:30:54 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/18 16:54:39 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/23 18:13:51 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,63 +28,64 @@ int	ft_count_cmds(t_tok *tok)
 	return (tmp);
 }
 
-int	ft_args_strlen(t_tok *tok)
+int	ft_args_counting(t_tok *tok)
 {
 	int	i;
-	int	tmp;
+	int	n_args_str;
+	char	*line;
 
 	i = 0;
-	tmp = 1;
-	while (tok->str_line[i] && (tok->str_line[i] != '|'))// cycle to count args
+	n_args_str = 0;
+	line = tok->str_line;
+	while (line[i] && (line[i] != '|'))// cycle to count args
 	{
-		i = ft_skip_spaces(tok->str_line, i);
-		while (tok->str_line[i] && tok->str_line[i] != ' ' && tok->str_line[i] != '\t')//skip args
+		i = ft_skip_spaces(line, i);
+		while (line[i] && line[i] != ' ' && line[i] != '\t')//skip args
+		{
+			if (line[i] == '"')
+			{
+				i++;//skip first "
+				while (line[i] != '"')
+					i++;// skip chars till last "
+				i++;// skip last "
+				break;// break cycle for add 1 to tmp
+			}
 			i++;
-		tmp++;
+		}
+		if (line[i])
+			n_args_str++;
 	}
-	return (tmp);
+	return (n_args_str);
 }
 
-char	**parse_tokens(t_tok *tok, char **args_mat, int *i, int *i_mat)
+char	**ft_populate_mtx(t_tok *tok, char **args_mat, int *i)
 {
-	int		j;
-	char	*args;
+	char	*line;
+	int		i_mat;
 
-	j = 0;
-	while (tok->str_line[*i])
+	line = tok->str_line;
+	i_mat = 0;
+	while (line[*i] && (line[*i] != '|'))// cycle to populate args_mat
 	{
-		args = malloc(sizeof(char) * ft_strlen_till_char(tok->str_line, *i, ' ') + 1);
-		if (!args)
-			ft_perror(tok, "malloc error in parse_tokens", 1);
-		while (tok->str_line[*i] && tok->str_line[*i] != '|' && tok->str_line[*i] != ' ')
-			args[j++] = tok->str_line[(*i)++];
-		if (j != 0)
-		{
-			args[j] = '\0';
-			args_mat[(*i_mat)++] = args;
-		}
-		j = 0;
-		if (tok->str_line[*i] != '\0' && tok->str_line[*i] == '|')
-		{
-			args_mat[*i_mat] = NULL;
-			(*i)++;
-			break;
-		}
-		if (!tok->str_line[*i])
-			break;
-		(*i)++;
+		*i = ft_skip_spaces(line, *i);// skip spaces
+		if (line[*i] == '"')
+			args_mat[i_mat++] = ft_dq_pop_utils(i, line);//double quotes case populating
+		else if (line[*i] == '\'')
+			args_mat[i_mat++] = ft_q_pop_utils(i, line);// single quotes case populating
+		else if (line[*i] != '|')
+			args_mat[i_mat++] = ft_w_pop_utils(i, line);// normal case populating
 	}
+	args_mat[i_mat] = NULL;//putting end of matrix
 	return (args_mat);
 }
 
 void	ft_pipe_utils(t_tok *tok, int *pip, int i, char *path, char **args, char **env)
 {
-	//printf("|\nargs ft_pipe_utils: %s\n|\n", args[1]);
 	while (1)
 	{
 		if (ft_matlen((void**)tok->cmds) == 1) //if there is only one command
 		{
-			printf("executing %s\n", path);
+			//printf("executing %s\n", path);
 			execve(path, args, env);//getting args and executing
 			ft_perror(tok, "execve failed", 1);
 		}

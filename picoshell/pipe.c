@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/18 16:56:03 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/23 17:58:03 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,25 +59,22 @@ char	***ft_set_cmds_args(t_tok *tok)
 	char	***cmds_args;
 	char	**args_mat;
 	int		i;
-	int		i_mat;
 	int		i_cmd;
 
 	i = 0;
-	i_mat = 0;
 	i_cmd = 0;
 	cmds_args = malloc (sizeof (char **) * ft_count_cmds(tok) + 1);//allocating memory for cmds_args + null
-	args_mat = malloc (sizeof (char *) * ft_args_strlen(tok) + 1);//allocating memory for as many strings of arguments present
-	if (!cmds_args || !args_mat)
+	if (!cmds_args)
 		ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
 	while (tok->str_line[i])
 	{
-		i = ft_skip_spaces(tok->str_line, i);
-		args_mat = parse_tokens(tok, args_mat, &i, &i_mat);//setting args_mat
-		cmds_args[i_cmd++] = args_mat;
-		args_mat = malloc (sizeof (char *) * ft_args_strlen(tok) + 1);//allocating memory for as many strings of arguments present
+		args_mat = malloc (sizeof (char *) * ft_args_counting(tok) + 1);//allocating memory for as many strings of arguments present
 		if (!args_mat)
 			ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
-		i_mat = 0;
+		i = ft_skip_spaces(tok->str_line, i);//skip spaces
+		args_mat = ft_populate_mtx(tok, args_mat, &i);//setting args_mat
+		cmds_args[i_cmd++] = args_mat;
+		i++;
 	}
 	cmds_args[i_cmd] = NULL;
 	return (cmds_args);
@@ -112,8 +109,6 @@ void	ft_pipe(t_tok *tok)
 	pipe(pip);
 	tok->cmds = ft_get_cmds_names_from_line(tok);
 	tok->cmds_args = ft_set_cmds_args(tok);
-	//printf("args[0]: %s\n", tok->cmds_args[0][0]);
-	//printf("args[1]: %s\n", tok->cmds_args[0][1]);
 	while (i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
 	{
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
@@ -122,6 +117,8 @@ void	ft_pipe(t_tok *tok)
 			ft_perror(tok, "fork failed", 1);
 		else if (pid == 0)//if it's a child process
 			ft_pipe_utils(tok, pip, i, path, tok->cmds_args[i], tok->env);
+		else // if it's the parent process
+			wait(NULL); // wait for the child process to finish
 		i++;
 		free(path);
 	}

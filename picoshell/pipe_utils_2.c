@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 12:09:08 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/18 16:55:24 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:25:43 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,4 +48,47 @@ void	ft_last_child(t_tok *tok, int *pipe, char *path, char **args, char **env)
 	execve(path, args, env);
 	ft_perror(tok, "execve failed", 1);
 	exit(EXIT_FAILURE);
+}
+
+char	*ft_dq_pop_utils(int *i, char *line)
+{
+	int		tmp_i;
+	char	*tmp;
+
+	tmp = malloc (sizeof (char) * (ft_strlen_till_char(line, *i, '"') + 1));//allocating memory for args
+	tmp_i = 0;
+	(*i)++;// skip first "
+	while (line[*i] != '"' && line[*i] != '\0')
+		tmp[tmp_i++] = line[(*i)++];//populating args
+	tmp[tmp_i] = '\0';//putting end of string
+	(*i)++;//skip last "
+	return (tmp);
+}
+
+char	*ft_q_pop_utils(int *i, char *line)
+{
+	int		tmp_i;
+	char	*tmp;
+
+	tmp = malloc (sizeof (char) * (ft_strlen_till_char(line, *i, '\'') + 1));//allocating memory for args
+	tmp_i = 0;
+	(*i)++;// skip first '
+	while (line[*i] != '\'' && line[*i] != '\0')
+		tmp[tmp_i++] = line[(*i)++];//populating args
+	tmp[tmp_i] = '\0';//putting end of string
+	(*i)++;//skip last '
+	return (tmp);
+}
+
+char	*ft_w_pop_utils(int *i, char *line)
+{
+	int		tmp_i;
+	char	*tmp;
+
+	tmp = malloc (sizeof (char) * (ft_strlen_till_char(line, *i, ' ') + 1));//allocating memory for args
+	tmp_i = 0;
+	while (line[*i] && line[*i] != ' ' && line[*i] != '\t')//populating args
+		tmp[tmp_i++] = line[(*i)++];
+	tmp[tmp_i] = '\0';//putting end of string
+	return (tmp);
 }

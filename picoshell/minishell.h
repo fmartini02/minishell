@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/18 11:44:19 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/23 16:28:41 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,9 +38,9 @@ typedef struct s_tok
 	char			***cmds_args;
 }	t_tok;
 
-char		*ft_db_q_case(const char *s, int i);
-char		*ft_normal_case(const char *s, int i);
-char		*ft_sngl_q_case(const char *s, int i);
+char		*ft_db_q_case(const char *s, int *i);
+char		*ft_normal_case(const char *s, int *i);
+char		*ft_sngl_q_case(const char *s, int *i);
 void		ft_add_sig_to_set(sigset_t *my_set);
 void		ft_init_set(sigset_t *my_set);
 void		ctrl_d_case(void);
@@ -68,11 +68,14 @@ void		ft_first_child(t_tok *tok, int *pipe, char *path, char **args, char **env)
 void		ft_succ_childs(t_tok *tok, int *pipe, char *path, char **args, char **env);
 void		ft_last_child(t_tok *tok, int *pipe, char *path, char **args, char **env);
 int			ft_count_cmds(t_tok *tok);
-int			ft_args_strlen(t_tok *tok);
+int			ft_args_counting(t_tok *tok);
 void		ft_perror(t_tok *tok, char *s, int flag);
-char		**parse_tokens(t_tok *tok, char **args_mat, int *i, int *i_mat);
+char		*ft_dq_pop_utils(int *i, char *line);
+char		*ft_q_pop_utils(int *i, char *line);
+char		*ft_w_pop_utils(int *i, char *line);
+char		**ft_populate_mtx(t_tok *tok, char **args_mat, int *i);
 char		***ft_set_cmds_args(t_tok *tok);
 void		ft_pipe_utils(t_tok *tok, int *pipe, int i, char *path, char **args, char **env);
-int			ft_line_len(const char *s);
+int			ft_vars_len(const char *s);
 
 #endif
