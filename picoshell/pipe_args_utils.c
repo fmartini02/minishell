@@ -1,16 +1,24 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_utils.c                                       :+:      :+:    :+:   */
+/*   pipe_args_utils.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/28 17:30:54 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/23 18:13:51 by fmartini         ###   ########.fr       */
+/*   Created: 2024/04/30 15:24:35 by fmartini          #+#    #+#             */
+/*   Updated: 2024/05/02 16:21:09 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
+int	ft_args_counting_utils(char *s, char c, int i)
+{
+	i++;//skip first "
+	while (s[i] != c && s[i] != '\0')
+		i++;// skip chars till last "
+	i++;// skip last "
+	return (i);
+}
 
 int	ft_count_cmds(t_tok *tok)
 {
@@ -28,13 +36,11 @@ int	ft_count_cmds(t_tok *tok)
 	return (tmp);
 }
 
-int	ft_args_counting(t_tok *tok)
+int	ft_args_counting(t_tok *tok, int i)
 {
-	int	i;
 	int	n_args_str;
 	char	*line;
 
-	i = 0;
 	n_args_str = 0;
 	line = tok->str_line;
 	while (line[i] && (line[i] != '|'))// cycle to count args
@@ -43,17 +49,14 @@ int	ft_args_counting(t_tok *tok)
 		while (line[i] && line[i] != ' ' && line[i] != '\t')//skip args
 		{
 			if (line[i] == '"')
-			{
-				i++;//skip first "
-				while (line[i] != '"')
-					i++;// skip chars till last "
-				i++;// skip last "
-				break;// break cycle for add 1 to tmp
-			}
+				i = ft_args_counting_utils(line, '"', i);
+			if (line[i] == '\'')
+				i = ft_args_counting_utils(line, '\'', i);
 			i++;
 		}
 		if (line[i])
 			n_args_str++;
+		i = ft_skip_spaces(line, i);
 	}
 	return (n_args_str);
 }
@@ -79,22 +82,23 @@ char	**ft_populate_mtx(t_tok *tok, char **args_mat, int *i)
 	return (args_mat);
 }
 
-void	ft_pipe_utils(t_tok *tok, int *pip, int i, char *path, char **args, char **env)
+int	**ft_init_pipes(t_tok *tok)
 {
-	while (1)
-	{
-		if (ft_matlen((void**)tok->cmds) == 1) //if there is only one command
-		{
-			//printf("executing %s\n", path);
-			execve(path, args, env);//getting args and executing
-			ft_perror(tok, "execve failed", 1);
-		}
-		else if (i == 0 && ft_matlen((void**)tok->cmds) > 1)
-			ft_first_child(tok, pip, path, args, env);
-		else if (i < (ft_matlen((void**)tok->cmds) - 1))
-			ft_succ_childs(tok, pip, path, args, env);
-		else
-			ft_last_child(tok, pip, path, args, env);
-	}
-}
+	int	**pip;
+	int	i;
 
+	i = 0;
+	pip = malloc (sizeof (int *) * ft_count_cmds(tok) );//allocating memory for pipes + null(n_pip = n_cmds - 1)
+	if (!pip)
+		ft_perror(tok, "malloc error in ft_init_pipes", 1);
+	while (i < (ft_count_cmds(tok)))
+	{
+		pip[i] = malloc (sizeof (int) * 2);//allocating memory for pipe
+		if (!pip[i])
+			ft_perror(tok, "malloc error in ft_init_pipes", 1);
+		pipe(pip[i]);//creating pipe
+		i++;
+	}
+	pip[i] = NULL;
+	return (pip);
+}

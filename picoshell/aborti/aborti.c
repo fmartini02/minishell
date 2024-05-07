@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:14:11 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/09 16:32:45 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:54:19 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -141,6 +141,8 @@ char *const	*ft_exec_args(char *path, char *args)
 	}
 	return (exec_args);
 }
+
+
 
 // char	*ft_find_var(char *s)
 // {

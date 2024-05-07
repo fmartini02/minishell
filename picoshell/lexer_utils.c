@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/22 15:23:22 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/04/24 18:30:11 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,26 +15,19 @@
 char	*ft_sngl_q_case(const char *s, int *i)
 {
 	int		j;
-	int		q_len;
 	char	*str;
 
 	j = 0;
-	q_len = 1;
-	(*i)++;
-	while (s[*i] && s[*i] != '\'')
-	{
-		(*i)++;
-		q_len++;
-	}
-	str = malloc (sizeof(char) * q_len + 1);
+	(*i)++;// skip first '
+	str = malloc (sizeof(char) * ft_strlen_till_char((char *)s, *i, '\'') + 3);// + 3 bcs of ' char and null byte
 	if (!str)
 		return NULL;
-	while (j < q_len)
-	{
-		str[j] = s[*i];
-		j++;
-	}
+	str[j++] = '\'';
+	while (s[*i] && s[*i] != '\'')
+		str[j++] = s[(*i)++];
+	str[j++] = '\'';
 	str[j] = '\0';
+	(*i)++;// skip last '
 	return (str);
 }
 
@@ -44,21 +37,17 @@ char	*ft_db_q_case(const char *s, int *i)
 	char	*str;
 
 	j = 0;
-	str = malloc (sizeof (char) * ft_strlen_till_char((char*)s, *i, '"') + 2);//allocating memory for string, eventual variables, null byte, and " char
+	(*i)++;// skip first "
+	str = malloc (sizeof (char) * ft_strlen_till_char((char*)s, *i, '"') + 1);//allocating memory for string, eventual variables and null byte
 	if (!str)
 		return NULL;
-	str[j++] = '"';
-	(*i)++;
 	while (s[*i] && s[*i] !='"')
 	{
 		if (s[*i + j] == '$')
 			ft_dq_utils(&str, s, i, &j);//if variable exist swap it for its value
-		str[j] = s[*i];//copying "string"
-		(*i)++;
-		j++;
+		str[j++] = s[(*i)++];//copying "string"
 	}
-	(*i)++;
-	str[j++] = '"';
+	(*i)++;// skip last "
 	str[j] = '\0';
 	return (str);
 }

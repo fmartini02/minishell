@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/22 15:11:46 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/05/01 15:48:25 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,9 +34,9 @@ char	*ft_lexer(const char *s)
 		 	temp = ft_normal_case(s, &i);
 		line = ft_strjoin(line, temp);
 		free(temp);
-		while (s[i] != ' ' && s[i] != '\t' && s[i] && s[i] != '"')
+		while (s[i] != ' ' && s[i] != '\t' && s[i] && s[i] != '"' && s[i] != '\'')
 			i++;
-		i = ft_skip_spaces((char*)s, i);
+		//i = ft_skip_spaces((char*)s, i);
 	}
 	line[i] = '\0';
 	return (line);
@@ -72,7 +72,7 @@ int	main(int ac, char **av, char **envp)
 			ctrl_d_case();
 		add_history(s);
 		inputs->str_line = ft_lexer(s);
-		ft_pipe(inputs);
+		ft_pipe(inputs, 0);
 		inputs->next = createNode();
 	}
 }

@@ -9,8 +9,9 @@ SRC = pico_shell.c \
 	  ft_initializer.c \
 	  dollar_case_utils.c \
 	  pipe.c \
-	  pipe_utils.c \
-	  pipe_utils_2.c \
+	  pipe_exe_utils.c \
+	  pipe_args_pop.c \
+	  pipe_args_utils.c \
 	  ft_errors.c
 
 OBJ = $(SRC:.c=.o)
