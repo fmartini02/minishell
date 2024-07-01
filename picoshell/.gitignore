@@ -1,5 +1,4 @@
-.vscode
-libft
+.vscode/
 picoshell
 /test/
 !*/test/

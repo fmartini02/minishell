@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/03 16:14:11 by fmartini          #+#    #+#             */
-/*   Updated: 2024/05/01 15:54:19 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:00:10 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -162,3 +162,13 @@ char *const	*ft_exec_args(char *path, char *args)
 // 		s = strchr(s, '=');
 // 	}
 // }
+
+t_env	*create_node(char *var)
+{
+	t_env	*node = malloc(sizeof(t_env));
+	if (!node)
+		ft_perror(NULL, "malloc error in create_node", 1);
+	node->var = var;
+	node->next = NULL;
+	return node;
+}

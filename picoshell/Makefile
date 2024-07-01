@@ -12,7 +12,9 @@ SRC = pico_shell.c \
 	  pipe_exe_utils.c \
 	  pipe_args_pop.c \
 	  pipe_args_utils.c \
-	  ft_errors.c
+	  ft_errors.c \
+	  ft_env_shits.c \
+	  ft_utils.c \
 
 OBJ = $(SRC:.c=.o)
 

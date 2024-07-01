@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/05/03 16:03:12 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/05/09 15:15:47 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,14 +31,20 @@ enum pipe_macro
 	WRITE_END
 };
 
+typedef struct s_env
+{
+	char			*content;
+	struct s_env	*next;
+}	t_env;
+
 typedef struct s_tok
 {
 	char			*str_line;
-	char			**env;
+	t_env			*env;
 	char			**cmds;
 	char			***cmds_args;
-	struct s_tok	*next;
 	int				**pipes;
+	struct s_tok	*next;
 }	t_tok;
 
 char		*ft_db_q_case(const char *s, int *i);
@@ -83,5 +89,10 @@ char		***ft_set_cmds_args(t_tok *tok);
 void		ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env);
 int			**ft_init_pipes(t_tok *tok);
 int			ft_vars_len(const char *s);
+void		ft_print_list(t_env *head);
+t_env		*ft_set_env(char **envp);
+char		**ft_lst_2_mtx(t_env *head);
+char		*ft_init_line(const char *s, t_tok *tok);
+t_env		*ft_add_var(t_env *head, char *var);
 
 #endif

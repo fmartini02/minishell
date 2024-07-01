@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe_exe_utils.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/05/03 16:28:02 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/07/01 17:37:19 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,6 +14,8 @@
 
 void	ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env)
 {
+	if (ft_strstr(tok->cmds[i], "export") != NULL)
+		ft_add_var(tok->env, tok->cmds_args[i++][1]);
 	while (1)
 	{
 		if (ft_matlen((void**)tok->cmds) == 1) //if there is only one command

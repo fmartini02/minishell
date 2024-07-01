@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/24 18:30:11 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/05/09 10:53:19 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -52,7 +52,7 @@ char	*ft_db_q_case(const char *s, int *i)
 	return (str);
 }
 
-char *ft_normal_case(const char *s, int *i)
+char	*ft_normal_case(const char *s, int *i)
 {
 	int j;
 	int k;
@@ -69,35 +69,22 @@ char *ft_normal_case(const char *s, int *i)
 	return (str);
 }
 
-int ft_count_words(const char *s)
+char	*ft_init_line(const char *s, t_tok *tok)
 {
-	int word_count;
+	char	*line;
 
-	word_count = 0;
-	while (*s)
+	if (ft_strlen(s) == 0)
 	{
-		while (*s == ' ' || *s == '\t')
-			s++;
-		if (*s)
-			word_count++;
-		while (*s && *s != ' ' && *s != '\t')
-			s++;
+		line = malloc(sizeof(char) * 2);
+		line[0] = '\n';
+		line[1] = '\0';
 	}
-	return (word_count);
-}
-
-int	ft_vars_len(const char *s)
-{
-	int i;
-	int len;
-
-	i = 0;
-	len = 0;
-	while (s[i])
+	else
 	{
-		if (s[i] == '"')
-			len += ft_strlen(ft_db_q_case(s, &i));
-		i++;
+		line = malloc(sizeof(char) * (ft_strlen(s) + ft_vars_len(s) + 1));
+		line = "";
 	}
-	return (len);
+	if (!line)
+		ft_perror(tok, "malloc error in ft_init_line", 1);
+	return (line);
 }

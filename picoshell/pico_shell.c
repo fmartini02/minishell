@@ -6,7 +6,7 @@
 /*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/05/01 15:48:25 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/05/09 10:54:14 by fmartini         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -15,15 +15,14 @@
 
 volatile int sig_code = 0;
 
-char	*ft_lexer(const char *s)
+char	*ft_lexer(const char *s, t_tok *tok	)
 {
 	int		i;
 	char	*line;
 	char	*temp;
 
 	i = 0;
-	line = malloc(sizeof(char) * (ft_strlen(s) + ft_vars_len(s) + 1));
-	line = "";
+	line = ft_init_line(s, tok);
 	while (s[i])
 	{
 		if (s[i] == 39)
@@ -36,7 +35,6 @@ char	*ft_lexer(const char *s)
 		free(temp);
 		while (s[i] != ' ' && s[i] != '\t' && s[i] && s[i] != '"' && s[i] != '\'')
 			i++;
-		//i = ft_skip_spaces((char*)s, i);
 	}
 	line[i] = '\0';
 	return (line);
@@ -64,14 +62,14 @@ int	main(int ac, char **av, char **envp)
 	ft_initializer(&inputs,&sa);
 	ft_signal_ear(&sa);
 	pipe(pipe_fd);
-	inputs->env = envp;
+	inputs->env = ft_set_env(envp);
 	while (1)
 	{
 		s = readline("minishell$ ");
 		if (!s)
 			ctrl_d_case();
 		add_history(s);
-		inputs->str_line = ft_lexer(s);
+		inputs->str_line = ft_lexer(s, inputs);
 		ft_pipe(inputs, 0);
 		inputs->next = createNode();
 	}

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pipe.c                                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/05/03 16:27:01 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/06/26 15:35:39 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -69,21 +69,20 @@ void	ft_pipe(t_tok *tok, int i)
 	tok->pipes = ft_init_pipes(tok);
 	while (i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
 	{
-		//printf("fd[0][0] pipe is: %d\n", fcntl(tok->pipes[0][0], F_GETFL));
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
 		pid = fork();//creating a child process
 		if (pid < 0)//checking if the fork failed
 			ft_perror(tok, "fork failed", 1);
 		else if (pid == 0)//if it's a child process
-			ft_pipe_utils(tok, i, path, tok->cmds_args[i], tok->env);
+			ft_pipe_utils(tok, i, path, tok->cmds_args[i], ft_lst_2_mtx(tok->env));
 		else
 			close(tok->pipes[i][WRITE_END]);
 		waitpid(pid, &status, 0);// wait for the child process to finish
-		if (i != 0) // if not the first command, close the read end of the previous pipe
+		if (i != 0)// if not the first command, close the read end of the previous pipe
 			close(tok->pipes[i - 1][READ_END]);
 		free(path);
 		i++;
 	}
-	if (i != 0) // close the read end of the last pipe
+	if (i != 0)// close the read end of the last pipe
 		close(tok->pipes[i - 1][READ_END]);
 }
