@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   pico_shell.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/05/09 10:54:14 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/09/02 15:34:58 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,33 @@ void	handle_signals(int signum)
 		sig_code = ctrl_bckslash_case(signum);
 	else if (signum == SIGTSTP)//ctrl + z
 		sig_code = ctrl_z_case(signum);
+}
+
+char	*ft_select_prompt(void)
+{
+	char	tmp[PATH_MAX];
+	char	*prompt;
+	char	*home;
+
+	prompt = NULL;
+	home = getenv("HOME");
+	if (getcwd(tmp, PATH_MAX))
+	{
+		if(ft_strcmp(tmp, "/") == 0)
+			prompt = ft_strdup("/$ ");
+		else
+		{
+			if (ft_strcmp(tmp, home) == 0)
+				prompt = ft_strdup("~/");
+			else if(ft_strncmp(tmp, home, ft_strlen(home)) == 0)
+				prompt = ft_strjoin("~/", tmp + ft_strlen(home));
+			else
+				prompt = ft_strdup(tmp);
+		}
+	}
+	else
+		perror("getcwd() error");
+	return (prompt);
 }
 
 int	main(int ac, char **av, char **envp)

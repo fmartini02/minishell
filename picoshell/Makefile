@@ -15,6 +15,10 @@ SRC = pico_shell.c \
 	  ft_errors.c \
 	  ft_env_shits.c \
 	  ft_utils.c \
+	  ft_builtins_cmds.c \
+	  ft_cd_utils.c \
+	  ft_cd_utils2.c \
+	  ft_cd.c \
 
 OBJ = $(SRC:.c=.o)
 

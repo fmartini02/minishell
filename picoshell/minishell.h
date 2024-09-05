@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   minishell.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/05/09 15:15:47 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/09/05 17:04:51 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,10 +17,11 @@
 # include<stdio.h>
 # include<stdlib.h>
 # include<signal.h>
-# include <fcntl.h>
+# include<fcntl.h>
 # include<termios.h>
-# include <errno.h>
-# include <sys/wait.h>
+# include<errno.h>
+# include<limits.h>
+# include<sys/wait.h>
 # include"libft/libft.h"
 # include<readline/readline.h>
 # include<readline/history.h>
@@ -94,5 +95,16 @@ t_env		*ft_set_env(char **envp);
 char		**ft_lst_2_mtx(t_env *head);
 char		*ft_init_line(const char *s, t_tok *tok);
 t_env		*ft_add_var(t_env *head, char *var);
+void		ft_cd_builtin(t_tok *tok, char **args);
+void		handle_absolute_path(char *arg);
+void		handle_parent_directory(char *path);
+void		handle_parent_directory(char *path);
+void		handle_env_variable(char *arg);
+void		handle_relative_path(char *arg, char *path);
+void		handle_default_case(char *arg);
+void		ft_root_case(void);
+void		ft_dotdot_case(char *path);
+void		ft_same_dir_case(char *path);
+void		ft_user_home_case(char **args);
 
 #endif

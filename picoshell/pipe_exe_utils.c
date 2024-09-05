@@ -6,16 +6,28 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/07/01 17:37:19 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:17:12 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env)
+void	ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env)//i at the beginning is 0
 {
-	if (ft_strstr(tok->cmds[i], "export") != NULL)
-		ft_add_var(tok->env, tok->cmds_args[i++][1]);
+	//if (!ft_strcmp(tok->cmds[i], "cd"))
+	//	ft_cd_builtin (tok, args);
+	// if (ft_strcmp(tok->cmds[i], "echo")&& ft_find_word(args, "-n"))
+	// 	ft_echo_builtins(tok, args, i);
+	// else if (ft_strcmp(tok->cmds[i], "pwd"))
+	// 	ft_pwd_builtins(tok, args, i);
+	// else if (ft_strcmp(tok->cmds[i], "export"))
+	// 	ft_export_builtins(tok, args, i);
+	// else if (ft_strcmp(tok->cmds[i], "unset"))
+	// 	ft_unset_builtins(tok, args, i);
+	// else if (ft_strcmp(tok->cmds[i], "env"))
+	// 	ft_env_builtins(tok, args, i);
+	// else if (ft_strcmp(tok->cmds[i], "exit"))
+	// 	ft_exit_builtins(tok, args, i);
 	while (1)
 	{
 		if (ft_matlen((void**)tok->cmds) == 1) //if there is only one command

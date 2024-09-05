@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/06/26 15:35:39 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/04 16:15:39 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ char	*get_cmd_path(char **paths, char *cmd)
 	return (NULL);
 }
 
-void	ft_pipe(t_tok *tok, int i)
+void	ft_pipe(t_tok *tok, int i)//i is 0 at the beginning
 {
 	pid_t		pid;
 	int			status;
@@ -70,6 +70,8 @@ void	ft_pipe(t_tok *tok, int i)
 	while (i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
 	{
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
+		if (!ft_strcmp(tok->cmds[i], "cd"))//if the command is cd
+			ft_cd_builtin (tok, tok->cmds_args[i]);
 		pid = fork();//creating a child process
 		if (pid < 0)//checking if the fork failed
 			ft_perror(tok, "fork failed", 1);
