@@ -19,6 +19,12 @@ SRC = pico_shell.c \
 	  ft_cd_utils.c \
 	  ft_cd_utils2.c \
 	  ft_cd.c \
+	  ft_echo.c \
+	  ft_pwd.c \
+	  ft_export.c \
+	  ft_env.c \
+	  ft_unset.c \
+	  ft_exit.c \
 
 OBJ = $(SRC:.c=.o)
 

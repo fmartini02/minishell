@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:36:53 by francema          #+#    #+#             */
-/*   Updated: 2024/09/05 17:18:41 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:45:37 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,7 +35,10 @@ void	ft_cd_builtin(t_tok *tok, char **args)
 
 	path[0] = '\0';
 	if (!args[1])
+	{
+		tok->builtin_flag = 1;
 		return ;
+	}
 	if (!getcwd(path, sizeof(path)))
 		perror("getpath failed");
 	if (ft_strcmp (args[1], ".." ) == 0)
@@ -48,4 +51,5 @@ void	ft_cd_builtin(t_tok *tok, char **args)
 		ft_root_case();
 	else
 		ft_common_case(args, path);
+	tok->builtin_flag = 1;
 }

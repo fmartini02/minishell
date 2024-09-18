@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/04 16:15:39 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:58:10 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -70,8 +70,7 @@ void	ft_pipe(t_tok *tok, int i)//i is 0 at the beginning
 	while (i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
 	{
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
-		if (!ft_strcmp(tok->cmds[i], "cd"))//if the command is cd
-			ft_cd_builtin (tok, tok->cmds_args[i]);
+		ft_builtins_cmds(tok, tok->cmds_args[i]);//checking if the command is a built-in
 		pid = fork();//creating a child process
 		if (pid < 0)//checking if the fork failed
 			ft_perror(tok, "fork failed", 1);

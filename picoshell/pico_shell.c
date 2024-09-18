@@ -6,16 +6,16 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/02 15:34:58 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/10 16:26:16 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #define _POSIX_C_SOURCE 200809L
 #include "minishell.h"
 
-volatile int sig_code = 0;
+volatile int sig_code;
 
-char	*ft_lexer(const char *s, t_tok *tok	)
+char	*ft_lexer(const char *s, t_tok *tok)
 {
 	int		i;
 	char	*line;
@@ -100,4 +100,5 @@ int	main(int ac, char **av, char **envp)
 		ft_pipe(inputs, 0);
 		inputs->next = createNode();
 	}
+	return (0);
 }

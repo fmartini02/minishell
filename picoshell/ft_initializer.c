@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   ft_initializer.c                                   :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 11:23:59 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/27 17:12:48 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/09/13 16:51:48 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,7 @@ void	ft_initializer(t_tok **inputs, struct sigaction *sa)
 	sigset_t	my_set;
 
 	*inputs = createNode();
+	(*inputs)->builtin_flag = -1;
 	ft_init_set(&my_set);
 	ft_add_sig_to_set(&my_set);
 	sa->sa_handler = &handle_signals;

@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/05 17:04:51 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/18 18:35:15 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,6 +46,7 @@ typedef struct s_tok
 	char			***cmds_args;
 	int				**pipes;
 	struct s_tok	*next;
+	int				builtin_flag;
 }	t_tok;
 
 char		*ft_db_q_case(const char *s, int *i);
@@ -106,5 +107,12 @@ void		ft_root_case(void);
 void		ft_dotdot_case(char *path);
 void		ft_same_dir_case(char *path);
 void		ft_user_home_case(char **args);
+void		ft_builtins_cmds(t_tok *tok, char **args);
+void		ft_echo_builtin(t_tok *tok, char **args);
+void		ft_pwd_builtin(t_tok *tok);
+void		ft_export_builtin(t_tok *tok, char **args);
+void		ft_env_builtin(t_tok *tok);
+void		ft_unset_builtin(t_tok *tok, char **args);
+void		ft_exit_builtin(t_tok *tok, char **args);
 
 #endif
