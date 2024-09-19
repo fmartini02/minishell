@@ -3,3 +3,6 @@ picoshell
 /test/
 !*/test/
 ciao.txt
+libft/.git
+libft/libft.a
+aborti/
