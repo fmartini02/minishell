@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:39:26 by fmartini          #+#    #+#             */
-/*   Updated: 2024/07/01 17:42:55 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/19 13:10:44 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,7 +48,7 @@ t_env *add_env_var_to_list(t_env *head, t_env *prev, const char *var_name)
 	var_value = getenv(var_name);
 	if (var_value != NULL)
 	{
-		env = ft_lstnew(var_value);
+		env = (t_env *)ft_lstnew(var_value);
 		if (prev == NULL)
 		{
 			head = env;
