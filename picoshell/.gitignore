@@ -1,7 +1,5 @@
 .vscode/
-picoshell
-/test/
-!*/test/
+picoshell/picoshell // picoshell executable
 ciao.txt
 libft/.git
 libft/libft.a
