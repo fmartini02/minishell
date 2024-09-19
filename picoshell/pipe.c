@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/13 16:58:10 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:09:18 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,7 +29,8 @@ char	***ft_set_cmds_args(t_tok *tok)
 		args_mat = malloc (sizeof (char *) * ft_args_counting(tok, i) + 1);//allocating memory for as many strings of arguments present
 		if (!args_mat)
 			ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
-		i = ft_skip_spaces(tok->str_line, i);//skip spaces
+		if (!ft_only_spaces(tok->str_line))
+			i = ft_skip_spaces(tok->str_line, i);//skip spaces
 		args_mat = ft_populate_mtx(tok, args_mat, &i);//setting args_mat
 		cmds_args[i_cmd++] = args_mat;
 		i++;

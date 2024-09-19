@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/18 18:35:15 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:02:57 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,6 +25,8 @@
 # include"libft/libft.h"
 # include<readline/readline.h>
 # include<readline/history.h>
+# include <curses.h>
+# include <term.h>
 
 enum pipe_macro
 {
@@ -89,6 +91,7 @@ char		**ft_get_cmds_names_from_line(t_tok *tok);
 char		**ft_populate_mtx(t_tok *tok, char **args_mat, int *i);
 char		***ft_set_cmds_args(t_tok *tok);
 void		ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env);
+int			ft_only_spaces(char *line);
 int			**ft_init_pipes(t_tok *tok);
 int			ft_vars_len(const char *s);
 void		ft_print_list(t_env *head);
@@ -114,5 +117,6 @@ void		ft_export_builtin(t_tok *tok, char **args);
 void		ft_env_builtin(t_tok *tok);
 void		ft_unset_builtin(t_tok *tok, char **args);
 void		ft_exit_builtin(t_tok *tok, char **args);
+void		ft_clear_builtin(t_tok *tok);
 
 #endif

@@ -12,6 +12,7 @@ SRC = pico_shell.c \
 	  pipe_exe_utils.c \
 	  pipe_args_pop.c \
 	  pipe_args_utils.c \
+	  pipe_args_utils2.c \
 	  ft_errors.c \
 	  ft_env_shits.c \
 	  ft_utils.c \
@@ -25,6 +26,7 @@ SRC = pico_shell.c \
 	  ft_env.c \
 	  ft_unset.c \
 	  ft_exit.c \
+	  ft_clear.c \
 
 OBJ = $(SRC:.c=.o)
 
@@ -43,7 +45,7 @@ $(LIBFT):
 	@make -s -C ./libft bonus
 
 $(NAME): $(OBJ) $(LIBFT)
-	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS)
+	@$(CC) $(CFLAGS) -o $(NAME) $(OBJ) $(LIBFT) $(LDFLAGS) -ltinfo
 
 %.o: %.c
 	@$(CC) -c $(CFLAGS) -I. $< -o $@ -s

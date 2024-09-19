@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/13 16:47:32 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/19 15:34:35 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,10 @@ void	ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env)//i at
 		exit(EXIT_SUCCESS);
 	}
 	else if (tok->builtin_flag == 1)
+	{
+		tok->builtin_flag = 0;
 		exit(EXIT_SUCCESS);
+	}
 	while (1)
 	{
 		if (ft_matlen((void**)tok->cmds) == 1) //if there is only one command
