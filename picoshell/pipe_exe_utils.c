@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/19 15:34:35 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:11:19 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -16,8 +16,8 @@ void	ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env)//i at
 {
 	if(tok->builtin_flag == 0)
 	{
-		ft_builtins_cmds(tok, args);
-		exit(EXIT_SUCCESS);
+		if (ft_builtins_cmds(tok, args))
+			exit(EXIT_SUCCESS);
 	}
 	else if (tok->builtin_flag == 1)
 	{
@@ -68,6 +68,8 @@ void	ft_first_child(t_tok *tok, char *path, char **args, char **env, int i)
 		ft_perror(tok, "dup2 failed", 1);
 	close(tok->pipes[i][READ_END]);
 	close(tok->pipes[i][WRITE_END]);
+	if (!ft_strcmp (tok->cmds[i], "env"))
+		write(1, ft_strfication(tok->env), ft_strlen(ft_strfication(tok->env)));
 	execve(path, args, env);
 	if (errno != 0)
 	{

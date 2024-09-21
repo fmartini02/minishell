@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:38:01 by francema          #+#    #+#             */
-/*   Updated: 2024/09/05 16:38:47 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:39:24 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -78,7 +78,6 @@ void	ft_user_home_case(char **args)
 		perror("getenv failed");
 		return;
 	}
-
 	if (!ft_strcmp(args[1], "~") || !ft_strcmp(args[1], "~/"))
 	{
 		if (chdir(home) != 0)

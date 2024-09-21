@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:24:35 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/19 16:05:11 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/19 16:35:48 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -30,7 +30,10 @@ int	ft_count_cmds(t_tok *tok)
 	while (tok->str_line[i])
 	{
 		if (tok->str_line[i] == '|')// cycle to count how many cmds there are
+		{
 			n_cmds +=1;
+			tok->pipe_flag = 1;
+		}
 		i++;
 	}
 	return (n_cmds);

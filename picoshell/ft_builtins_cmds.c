@@ -6,13 +6,13 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 15:28:03 by francema          #+#    #+#             */
-/*   Updated: 2024/09/19 15:35:39 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:10:40 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_builtins_cmds(t_tok *tok, char **args)
+int	ft_builtins_cmds(t_tok *tok, char **args)
 {
 	if (!ft_strcmp(args[0], "cd"))
 		ft_cd_builtin(tok, args);
@@ -31,7 +31,11 @@ void	ft_builtins_cmds(t_tok *tok, char **args)
 	else if (!ft_strcmp(args[0], "clear"))
 		ft_clear_builtin(tok);
 	else
+	{
 		tok->builtin_flag = 0;
+		return (0);
+	}
+	return (1);
 }
 
 

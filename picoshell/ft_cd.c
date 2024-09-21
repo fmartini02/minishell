@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:36:53 by francema          #+#    #+#             */
-/*   Updated: 2024/09/13 16:45:37 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/21 18:40:53 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -37,6 +37,8 @@ void	ft_cd_builtin(t_tok *tok, char **args)
 	if (!args[1])
 	{
 		tok->builtin_flag = 1;
+		if (chdir(getenv("HOME")) != 0)
+			perror("chdir failed");
 		return ;
 	}
 	if (!getcwd(path, sizeof(path)))
@@ -45,7 +47,7 @@ void	ft_cd_builtin(t_tok *tok, char **args)
 		ft_dotdot_case(path);
 	else if (!ft_strcmp (args[1], ".") || !ft_strcmp (args[1], "./"))
 		ft_same_dir_case(path);
-	else if (args[1][0] == '~')
+	else if (args[1][0] == '~' || !args[1])
 		ft_user_home_case(args);
 	else if (!ft_strcmp (args[1], "/"))
 		ft_root_case();
