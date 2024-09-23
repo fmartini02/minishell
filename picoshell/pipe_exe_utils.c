@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/21 18:11:19 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:12:33 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -17,7 +17,10 @@ void	ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env)//i at
 	if(tok->builtin_flag == 0)
 	{
 		if (ft_builtins_cmds(tok, args))
-			exit(EXIT_SUCCESS);
+		{
+			if (ft_strcmp(tok->cmds[i], "env") || tok->pipe_flag == 0)
+				exit(EXIT_SUCCESS);
+		}
 	}
 	else if (tok->builtin_flag == 1)
 	{

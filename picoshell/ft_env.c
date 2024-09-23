@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 18:33:14 by francema          #+#    #+#             */
-/*   Updated: 2024/09/21 18:09:48 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/23 15:07:42 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -46,7 +46,7 @@ char	*ft_strfication(t_env *env)
 		l = ft_strlen(tmp->content);
 		ft_strlcpy(env_vars + i, tmp->content, l + 1);
 		j += l;
-		env_vars[j++] = '\n'; // Add newline between entries
+		env_vars[j++] = '\n'; // Add newline between nodes
 		tmp = tmp->next;
 	}
 	env_vars[j] = '\0';
