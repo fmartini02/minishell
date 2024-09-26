@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/21 18:11:02 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:42:51 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -59,32 +59,32 @@ char	*get_cmd_path(char **paths, char *cmd)
 	return (NULL);
 }
 
-void	ft_pipe(t_tok *tok, int i)//i is 0 at the beginning
+void	ft_pipe(t_tok *tok)
 {
 	pid_t		pid;
 	int			status;
 	char		*path;
 
-	tok->cmds_args = ft_set_cmds_args(tok);
-	tok->cmds = ft_get_cmds_names_from_line(tok);
-	tok->pipes = ft_init_pipes(tok);
-	while (i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
+	tok->cmds_args = ft_set_cmds_args(tok);//setting the commands arguments
+	tok->cmds = ft_get_cmds_names_from_line(tok);//setting the commands names
+	tok->pipes = ft_init_pipes(tok);//initializing the pipes
+	while (tok->i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
 	{
-		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[i]);
-		ft_builtins_cmds(tok, tok->cmds_args[i]);//checking if the command is a built-in
+		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[tok->i]);//getting the path of the command
+		ft_builtins_cmds(tok, tok->cmds_args[tok->i]);//executing the builtins setting the flag
 		pid = fork();//creating a child process
 		if (pid < 0)//checking if the fork failed
 			ft_perror(tok, "fork failed", 1);
 		else if (pid == 0)//if it's a child process
-			ft_pipe_utils(tok, i, path, tok->cmds_args[i], ft_lst_2_mtx(tok->env));
+			ft_pipe_utils(tok, path, tok->cmds_args[tok->i]);
 		else
-			close(tok->pipes[i][WRITE_END]);
+			close(tok->pipes[tok->i][WRITE_END]);
 		waitpid(pid, &status, 0);// wait for the child process to finish
-		if (i != 0)// if not the first command, close the read end of the previous pipe
-			close(tok->pipes[i - 1][READ_END]);
+		if (tok->i != 0)// if not the first command, close the read end of the previous pipe
+			close(tok->pipes[tok->i - 1][READ_END]);
 		free(path);
-		i++;
+		(tok->i)++;
 	}
-	if (i != 0)// close the read end of the last pipe
-		close(tok->pipes[i - 1][READ_END]);
+	if (tok->i != 0)// close the read end of the last pipe
+		close(tok->pipes[tok->i - 1][READ_END]);
 }

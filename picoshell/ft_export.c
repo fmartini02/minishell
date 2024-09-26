@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 17:06:37 by francema          #+#    #+#             */
-/*   Updated: 2024/09/17 17:25:26 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/25 19:29:15 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ int	ft_check_key_value(char *var)
 	return (1);
 }
 
-void	ft_export_builtin(t_tok *tok, char **args)
+void	ft_export(t_tok *tok, char **args)
 {
 	t_env	*tmp;
 

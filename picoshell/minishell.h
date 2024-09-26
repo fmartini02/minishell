@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/21 18:10:33 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:34:16 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -47,9 +47,10 @@ typedef struct s_tok
 	char			**cmds;
 	char			***cmds_args;
 	int				**pipes;
-	struct s_tok	*next;
 	int				pipe_flag;
 	int				builtin_flag;
+	int				i;
+	int				last_child_flag;
 }	t_tok;
 
 char		*ft_db_q_case(const char *s, int *i);
@@ -66,7 +67,6 @@ void		ft_putchar_fd(char c, int fd);
 void		*ft_calloc(size_t nmemb, size_t size);
 void		ft_bzero(void *s, size_t n);
 int			ft_count_words(const char *s);
-t_tok		*createNode(void);
 void		ft_signal_ear(struct sigaction *sa);
 void		ft_initializer(t_tok **inputs, struct sigaction *sa);
 int			ft_find_dq_len(const char *s, int i);
@@ -77,10 +77,11 @@ char		*ft_get_cont_var(char *env_var_line, int j);
 char		*ft_get_var_name(const char *s, char *doll_var, int i, int j);
 int			ft_find_dq_len(const char *s, int i);
 char		*get_cmd_path(char **paths, char *cmd);
-void		ft_pipe(t_tok *tok, int i);
-void		ft_first_child(t_tok *tok, char *path, char **args, char **env, int i);
-void		ft_succ_childs(t_tok *tok, char *path, char **args, char **env, int i);
-void		ft_last_child(t_tok *tok, char *path, char **args, char **env, int i);
+void		ft_pipe(t_tok *tok);
+void		ft_first_child(t_tok *tok, char *path, char **args);
+void		ft_succ_childs(t_tok *tok, char *path, char **args);
+void		ft_last_child(t_tok *tok, char *path, char **args);
+void		ft_redirect_builtin_output(t_tok *tok, char **args);
 int			ft_count_cmds(t_tok *tok);
 int			ft_args_counting(t_tok *tok, int i);
 void		ft_perror(t_tok *tok, char *s, int flag);
@@ -91,7 +92,7 @@ char		*ft_extract_cmd_name(const char *s, int *i);
 char		**ft_get_cmds_names_from_line(t_tok *tok);
 char		**ft_populate_mtx(t_tok *tok, char **args_mat, int *i);
 char		***ft_set_cmds_args(t_tok *tok);
-void		ft_pipe_utils(t_tok *tok, int i, char *path, char **args, char **env);
+void		ft_pipe_utils(t_tok *tok, char *path, char **args);
 int			ft_only_spaces(char *line);
 int			**ft_init_pipes(t_tok *tok);
 int			ft_vars_len(const char *s);
@@ -100,10 +101,8 @@ t_env		*ft_set_env(char **envp);
 char		**ft_lst_2_mtx(t_env *head);
 char		*ft_init_line(const char *s, t_tok *tok);
 t_env		*ft_add_var(t_env *head, char *var);
-void		ft_cd_builtin(t_tok *tok, char **args);
 void		handle_absolute_path(char *arg);
-void		handle_parent_directory(char *path);
-void		handle_parent_directory(char *path);
+void		handle_parent_directory(char *path, char *arg);
 void		handle_env_variable(char *arg);
 void		handle_relative_path(char *arg, char *path);
 void		handle_default_case(char *arg);
@@ -112,13 +111,15 @@ void		ft_dotdot_case(char *path);
 void		ft_same_dir_case(char *path);
 void		ft_user_home_case(char **args);
 int			ft_builtins_cmds(t_tok *tok, char **args);
-void		ft_echo_builtin(t_tok *tok, char **args);
-void		ft_pwd_builtin(t_tok *tok);
-void		ft_export_builtin(t_tok *tok, char **args);
-void		ft_env_builtin(t_tok *tok);
+int			ft_is_a_builtin(t_tok *tok, int i);
+char		*ft_echo(t_tok *tok, char **args);
+char		*ft_pwd(t_tok *tok);
+char		*ft_env(t_tok *tok, char **args);
+void		ft_cd(t_tok *tok, char **args);
+void		ft_export(t_tok *tok, char **args);
+void		ft_unset(t_tok *tok, char **args);
+void		ft_exit(t_tok *tok, char **args);
+void		ft_clear(t_tok *tok);
 char		*ft_strfication(t_env *env);
-void		ft_unset_builtin(t_tok *tok, char **args);
-void		ft_exit_builtin(t_tok *tok, char **args);
-void		ft_clear_builtin(t_tok *tok);
 
 #endif

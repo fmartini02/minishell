@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:58:40 by francema          #+#    #+#             */
-/*   Updated: 2024/09/19 16:12:05 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:23:26 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,7 @@ int	**ft_init_pipes(t_tok *tok)
 	int	i;
 
 	i = 0;
-	pip = malloc (sizeof (int *) * ft_count_cmds(tok) );//allocating memory for pipes + null(n_pip = n_cmds - 1)
+	pip = malloc (sizeof (int *) * ft_count_cmds(tok) + 1);//allocating memory for pipes + null
 	if (!pip)
 		ft_perror(tok, "malloc error in ft_init_pipes", 1);
 	while (i < (ft_count_cmds(tok)))

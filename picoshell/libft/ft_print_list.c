@@ -1,40 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_print_list.c                                    :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 16:34:20 by francema          #+#    #+#             */
-/*   Updated: 2024/09/25 19:29:44 by francema         ###   ########.fr       */
+/*   Created: 2024/09/25 19:34:42 by francema          #+#    #+#             */
+/*   Updated: 2024/09/25 19:40:03 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_pwd(t_tok *tok)
+void	ft_print_list(void *head)
 {
-	char	*buf;
+	t_list *tmp;
 
-	if (!tok)
+	tmp = (t_list *)head;
+	while (tmp)
 	{
-		perror("ft_pwd: tok is NULL");
-		return (NULL);
+		ft_putstr((const char *)tmp->content);
+		tmp = tmp->next;
 	}
-	buf = malloc(sizeof(char) * PATH_MAX);
-	if (!buf)
-	{
-		perror("malloc failed");
-		tok->builtin_flag = 0;
-		return (NULL);
-	}
-	if(!getcwd(buf, sizeof(buf)))
-	{
-		perror("getcwd failed");
-		tok->builtin_flag = 0;
-		free(buf);
-		return (NULL);
-	}
-	tok->builtin_flag = 1;
-	return (buf);
 }

@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/10 16:26:16 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:02:06 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,20 +60,16 @@ char	*ft_select_prompt(void)
 	home = getenv("HOME");
 	if (getcwd(tmp, PATH_MAX))
 	{
-		if(ft_strcmp(tmp, "/") == 0)
-			prompt = ft_strdup("/$ ");
+		if (!ft_strcmp(tmp, home))
+			prompt = ft_strdup("~");
+		else if(!ft_strncmp(tmp, home, ft_strlen(home)))
+			prompt = ft_strjoin("~", tmp + ft_strlen(home) + 1);
 		else
-		{
-			if (ft_strcmp(tmp, home) == 0)
-				prompt = ft_strdup("~/");
-			else if(ft_strncmp(tmp, home, ft_strlen(home)) == 0)
-				prompt = ft_strjoin("~/", tmp + ft_strlen(home));
-			else
-				prompt = ft_strdup(tmp);
-		}
+			prompt = ft_strdup(tmp);
 	}
 	else
 		perror("getcwd() error");
+	ft_strlcat(prompt, "$ ", ft_strlen(prompt) + 3);
 	return (prompt);
 }
 
@@ -92,13 +88,15 @@ int	main(int ac, char **av, char **envp)
 	inputs->env = ft_set_env(envp);
 	while (1)
 	{
-		s = readline("minishell$ ");
+		s = readline(ft_select_prompt());
 		if (!s)
 			ctrl_d_case();
 		add_history(s);
 		inputs->str_line = ft_lexer(s, inputs);
-		ft_pipe(inputs, 0);
-		inputs->next = createNode();
+		ft_pipe(inputs);
+		inputs->i = 0;
+		inputs->last_child_flag = 0;
+		inputs->builtin_flag = 0;
 	}
 	return (0);
 }

@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:43:48 by francema          #+#    #+#             */
-/*   Updated: 2024/09/05 17:15:19 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/25 15:33:30 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,15 +18,21 @@ void	handle_absolute_path(char *arg)
 		perror("chdir failed");
 }
 
-void	handle_parent_directory(char *path)
+void	handle_parent_directory(char *path, char *arg)
 {
-	char	*tmp;
+	char	*tmp2;
 
 	ft_dotdot_case(path);
-	tmp = ft_strtrim(path, ".");
-	if (chdir(tmp) != 0)
-		perror("chdir failed");
-	free(tmp);
+	tmp2 = malloc(sizeof(char) * PATH_MAX);
+	if (getcwd(tmp2, PATH_MAX))
+	{
+		tmp2 = ft_strjoin(tmp2, arg + 2); // Skip leading '..'
+		if (chdir(tmp2) != 0)
+			perror("chdir failed");
+		free(tmp2);
+	}
+	else
+		perror("getcwd failed");
 }
 
 void	handle_relative_path(char *arg, char *path)

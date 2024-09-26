@@ -5,7 +5,6 @@ NAME = picoshell
 SRC = pico_shell.c \
       lexer_utils.c \
       signal_handling.c \
-      token_utils.c \
 	  ft_initializer.c \
 	  dollar_case_utils.c \
 	  pipe.c \

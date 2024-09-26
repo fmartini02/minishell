@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 11:23:59 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/13 16:51:48 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 15:27:17 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,8 +24,15 @@ void	ft_initializer(t_tok **inputs, struct sigaction *sa)
 {
 	sigset_t	my_set;
 
-	*inputs = createNode();
+	*inputs = malloc(sizeof(t_tok));
+	if (!*inputs)
+	{
+		perror("malloc failed");
+		exit(EXIT_FAILURE);
+	}
+	(*inputs)->i = 0;
 	(*inputs)->builtin_flag = -1;
+	(*inputs)->last_child_flag = 0;
 	ft_init_set(&my_set);
 	ft_add_sig_to_set(&my_set);
 	sa->sa_handler = &handle_signals;

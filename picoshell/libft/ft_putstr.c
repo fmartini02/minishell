@@ -1,26 +1,25 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   token_utils.c                                      :+:      :+:    :+:   */
+/*   ft_pustr.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/03/18 15:56:49 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/18 11:29:32 by fmartini         ###   ########.fr       */
+/*   Created: 2024/09/25 19:38:23 by francema          #+#    #+#             */
+/*   Updated: 2024/09/25 19:39:14 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-t_tok *createNode(void)
+void	ft_putstr(const char *s)
 {
-	t_tok *newNode;
+	int i;
 
-	newNode = malloc(sizeof(t_tok));
-	if (newNode == NULL) {
-		perror("allocation failed");
-		exit(1);
+	i = 0;
+	while (s[i])
+	{
+		write(1, &s[i], 1);
+		i++;
 	}
-	newNode->next = NULL;
-	return (newNode);
 }

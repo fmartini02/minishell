@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:38:01 by francema          #+#    #+#             */
-/*   Updated: 2024/09/21 18:39:24 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 17:05:23 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,10 @@ void	ft_dotdot_case(char *path)
 	len = 0;
 	slash_count = 0;
 	if(ft_count_slash(path) == 1)
+	{
 		ft_root_case();
+		return ;
+	}
 	while(path[len])
 	{
 		if(slash_count == (ft_count_slash(path) - 1))

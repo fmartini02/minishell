@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/18 17:16:14 by francema          #+#    #+#             */
-/*   Updated: 2024/09/18 18:33:06 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/25 19:31:33 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -61,7 +61,7 @@ int	ft_non_digit_exit(char **args)
 	return (exit_val);
 }
 
-void	ft_exit_builtin(t_tok *tok, char **args)
+void	ft_exit(t_tok *tok, char **args)
 {
 	int	ret_err;
 	int	exit_val;

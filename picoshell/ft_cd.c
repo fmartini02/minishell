@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/05 16:36:53 by francema          #+#    #+#             */
-/*   Updated: 2024/09/21 18:40:53 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 16:59:51 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	ft_common_case(char **args, char *path)
 	if (args[1][0] == '/')// Handle absolute path (starting with '/')
 		handle_absolute_path(args[1]);
 	else if (args[1][0] == '.' && args[1][1] == '.')// Handle parent directory navigation (../)
-		handle_parent_directory(path);
+		handle_parent_directory(path, args[1]);
 	else if (args[1][0] == '.' && args[1][1] == '/')// Handle relative path starting with ./
 		handle_relative_path(args[1], path);
 	else if (args[1][0] == '$')// Handle environment variables (e.g., $VAR)
@@ -28,12 +28,12 @@ void	ft_common_case(char **args, char *path)
 		handle_default_case(args[1]);
 }
 
-void	ft_cd_builtin(t_tok *tok, char **args)
+void	ft_cd(t_tok *tok, char **args)
 {
-	char	path[PATH_MAX];
+	char	*path;
 	(void)tok;
 
-	path[0] = '\0';
+	path = ft_calloc(PATH_MAX, sizeof(char));
 	if (!args[1])
 	{
 		tok->builtin_flag = 1;
@@ -41,8 +41,8 @@ void	ft_cd_builtin(t_tok *tok, char **args)
 			perror("chdir failed");
 		return ;
 	}
-	if (!getcwd(path, sizeof(path)))
-		perror("getpath failed");
+	if (!getcwd(path, PATH_MAX))
+		perror("get current path failed");
 	if (ft_strcmp (args[1], ".." ) == 0)
 		ft_dotdot_case(path);
 	else if (!ft_strcmp (args[1], ".") || !ft_strcmp (args[1], "./"))

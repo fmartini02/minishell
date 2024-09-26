@@ -6,13 +6,13 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:35:46 by francema          #+#    #+#             */
-/*   Updated: 2024/09/21 17:44:16 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/25 19:31:49 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_clear_builtin(t_tok *tok)
+void	ft_clear(t_tok *tok)
 {
 	char term_buffer[2048];
 	char *clear_cmd;

@@ -1,40 +1,29 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_strcpy.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 16:34:20 by francema          #+#    #+#             */
-/*   Updated: 2024/09/25 19:29:44 by francema         ###   ########.fr       */
+/*   Created: 2024/09/26 17:26:14 by francema          #+#    #+#             */
+/*   Updated: 2024/09/26 17:44:13 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_pwd(t_tok *tok)
+char	*ft_strcpy(char *dst, const char *src)
 {
-	char	*buf;
+	int	i;
 
-	if (!tok)
-	{
-		perror("ft_pwd: tok is NULL");
+	i = 0;
+	if (!dst || !src)
 		return (NULL);
-	}
-	buf = malloc(sizeof(char) * PATH_MAX);
-	if (!buf)
+	while (src[i])
 	{
-		perror("malloc failed");
-		tok->builtin_flag = 0;
-		return (NULL);
+		dst[i] = src[i];
+		i++;
 	}
-	if(!getcwd(buf, sizeof(buf)))
-	{
-		perror("getcwd failed");
-		tok->builtin_flag = 0;
-		free(buf);
-		return (NULL);
-	}
-	tok->builtin_flag = 1;
-	return (buf);
+	dst[i] = '\0';
+	return (dst);
 }

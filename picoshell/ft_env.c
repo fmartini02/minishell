@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 18:33:14 by francema          #+#    #+#             */
-/*   Updated: 2024/09/23 15:07:42 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/26 18:09:34 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -31,35 +31,24 @@ char	*ft_strfication(t_env *env)
 {
 	char	*env_vars;
 	t_env	*tmp;
-	long int	i;
-	long int	j;
-	long int	l;
 
-	i = 0;
-	j = 0;
 	tmp = env;
-	env_vars = malloc(sizeof(char) * (ft_env_vars_len(env) + ft_lstsize((void *)env))) + 1;
+	env_vars = malloc(sizeof(char) * (ft_env_vars_len(env) + ft_lstsize((void *)env) + 1));
 	if (!env_vars)
 		perror("malloc error in ft_env_builtin");
+	env_vars[0] = '\0';
 	while (tmp)
 	{
-		l = ft_strlen(tmp->content);
-		ft_strlcpy(env_vars + i, tmp->content, l + 1);
-		j += l;
-		env_vars[j++] = '\n'; // Add newline between nodes
+		env_vars = ft_strjoin_free(env_vars, tmp->content);
+		env_vars = ft_strjoin_free(env_vars, "\n"); // Add newline between nodes
 		tmp = tmp->next;
 	}
-	env_vars[j] = '\0';
 	return (env_vars);
 }
 
-void	ft_env_builtin(t_tok *tok)
+char	*ft_env(t_tok *tok, char **args)
 {
 	if (tok->pipe_flag == 1)
-		tok->builtin_flag = 0;
-	else
-	{
-		ft_print_list(tok->env);
-		tok->builtin_flag = 1;
-	}
+		ft_redirect_builtin_output(tok, args);
+	return (ft_strfication(tok->env));
 }

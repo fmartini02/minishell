@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:39:26 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/19 13:10:44 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/25 19:35:57 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,18 +62,6 @@ t_env *add_env_var_to_list(t_env *head, t_env *prev, const char *var_name)
 	}
 
 	return head;
-}
-
-void	ft_print_list(t_env *head)
-{
-	t_env *tmp;
-
-	tmp = head;
-	while (tmp)
-	{
-		printf("%s\n", tmp->content);
-		tmp = tmp->next;
-	}
 }
 
 char	**ft_lst_2_mtx(t_env *head)
