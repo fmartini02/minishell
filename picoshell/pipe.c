@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/27 17:19:46 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:08:08 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,6 +72,8 @@ void	ft_pipe(t_tok *tok)
 	{
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[tok->i]);//getting the path of the command
 		ft_builtins_cmds(tok, tok->cmds_args[tok->i]);//executing the builtins setting the flag
+		if (tok->pipe_flag)
+			printf("output: %s\n", ft_pwd(tok));
 		pid = fork();//creating a child process
 		if (pid < 0)//checking if the fork failed
 			ft_perror(tok, "fork failed", 1);

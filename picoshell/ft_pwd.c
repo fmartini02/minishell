@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 16:34:20 by francema          #+#    #+#             */
-/*   Updated: 2024/09/25 19:29:44 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/30 15:12:05 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ char	*ft_pwd(t_tok *tok)
 		tok->builtin_flag = 0;
 		return (NULL);
 	}
-	if(!getcwd(buf, sizeof(buf)))
+	if(!getcwd(buf, PATH_MAX))
 	{
 		perror("getcwd failed");
 		tok->builtin_flag = 0;
