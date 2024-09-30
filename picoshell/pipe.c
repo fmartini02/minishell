@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/26 15:42:51 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/27 17:19:46 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ char	***ft_set_cmds_args(t_tok *tok)
 
 	i = 0;
 	i_cmd = 0;
-	cmds_args = malloc (sizeof (char **) * ft_count_cmds(tok) + 1);//allocating memory for cmds_args + null
+	cmds_args = malloc (sizeof (char **) * (ft_count_cmds(tok) + 1));//allocating memory for cmds_args + null
 	if (!cmds_args)
 		ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
 	while (tok->str_line[i])
