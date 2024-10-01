@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/27 17:52:46 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/01 17:32:25 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,18 +25,17 @@ char	*ft_lexer(const char *s, t_tok *tok)
 	line = ft_init_line(s, tok);
 	while (s[i])
 	{
-		if (s[i] == 39)
+		if (s[i] == '\'')
 			temp = ft_sngl_q_case(s, &i);
-		else if (s[i] == 34)
+		else if (s[i] == '"')
 			temp = ft_db_q_case(s, &i);
 		else
 		 	temp = ft_normal_case(s, &i);
-		line = ft_strjoin(line, temp);
+		line = ft_strjoin_free(line, temp);
 		free(temp);
 		while (s[i] != ' ' && s[i] != '\t' && s[i] && s[i] != '"' && s[i] != '\'')
 			i++;
 	}
-	line[i] = '\0';
 	return (line);
 }
 
@@ -63,13 +62,16 @@ char	*ft_select_prompt(void)
 		if (!ft_strcmp(tmp, home))
 			prompt = ft_strdup("~");
 		else if(!ft_strncmp(tmp, home, ft_strlen(home)))
-			prompt = ft_strjoin("~", tmp + ft_strlen(home) + 1);
+			prompt = ft_strjoin_free(ft_strdup((const char *)"~"), tmp + ft_strlen(home) + 1);
 		else
 			prompt = ft_strdup(tmp);
 	}
 	else
+	{
 		perror("getcwd() error");
-	ft_strlcat(prompt, "$ ", ft_strlen(prompt) + 3);
+		ft_perror(NULL, "getcwd() error", 1);
+	}
+	prompt = ft_strjoin_free(prompt, "$ ");
 	return (prompt);
 }
 
@@ -97,6 +99,7 @@ int	main(int ac, char **av, char **envp)
 		inputs->i = 0;
 		inputs->last_child_flag = 0;
 		inputs->builtin_flag = 0;
+		free(s);
 	}
 	return (0);
 }

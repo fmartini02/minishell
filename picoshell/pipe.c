@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/30 15:08:08 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/01 18:27:31 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,14 +26,15 @@ char	***ft_set_cmds_args(t_tok *tok)
 		ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
 	while (tok->str_line[i])
 	{
-		args_mat = malloc (sizeof (char *) * ft_args_counting(tok, i) + 1);//allocating memory for as many strings of arguments present
+		args_mat = malloc (sizeof (char *) * (ft_args_counting(tok, i) + 1));//allocating memory for args_mat + null + cmd_name
 		if (!args_mat)
 			ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
 		if (!ft_only_spaces(tok->str_line))
 			i = ft_skip_spaces(tok->str_line, i);//skip spaces
 		args_mat = ft_populate_mtx(tok, args_mat, &i);//setting args_mat
 		cmds_args[i_cmd++] = args_mat;
-		i++;
+		if (tok->str_line[i])
+			i++;
 	}
 	cmds_args[i_cmd] = NULL;
 	return (cmds_args);
@@ -59,21 +60,24 @@ char	*get_cmd_path(char **paths, char *cmd)
 	return (NULL);
 }
 
+void	ft_set_fields(t_tok *tok)
+{
+	tok->cmds_args = ft_set_cmds_args(tok);//setting the commands arguments
+	tok->cmds = ft_get_cmds_names_from_line(tok);//setting the commands names
+	tok->pipes = ft_init_pipes(tok);//initializing the pipes
+}
+
 void	ft_pipe(t_tok *tok)
 {
 	pid_t		pid;
 	int			status;
 	char		*path;
 
-	tok->cmds_args = ft_set_cmds_args(tok);//setting the commands arguments
-	tok->cmds = ft_get_cmds_names_from_line(tok);//setting the commands names
-	tok->pipes = ft_init_pipes(tok);//initializing the pipes
+	ft_set_fields(tok);//setting the fields of the struct
 	while (tok->i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
 	{
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[tok->i]);//getting the path of the command
 		ft_builtins_cmds(tok, tok->cmds_args[tok->i]);//executing the builtins setting the flag
-		if (tok->pipe_flag)
-			printf("output: %s\n", ft_pwd(tok));
 		pid = fork();//creating a child process
 		if (pid < 0)//checking if the fork failed
 			ft_perror(tok, "fork failed", 1);

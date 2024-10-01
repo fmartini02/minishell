@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/07 16:39:26 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/25 19:35:57 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/01 15:30:03 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,7 +72,7 @@ char	**ft_lst_2_mtx(t_env *head)
 
 	i = 0;
 	tmp = head;
-	env = malloc(sizeof(char *) * (ft_lstsize((void *)head)));
+	env = malloc(sizeof(char *) * (ft_lstsize((void *)head) + 1));
 	while (tmp)
 	{
 		env[i] = ft_strdup(tmp->content);

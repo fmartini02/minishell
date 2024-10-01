@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/13 16:02:10 by francema          #+#    #+#             */
-/*   Updated: 2024/09/25 19:27:41 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:34:25 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ char	*ft_add_space(char *str)
 
 	if (!str)
 		return (NULL);
-	tmp = ft_strcat_smart(str, " ");
+	tmp = ft_strcat(str, " ");
 	if (!tmp)
 	{
 		free(str);
@@ -41,7 +41,7 @@ char	*ft_echo_flag_n(char **args)
 	str[0] = '\0';
 	while (args[i])
 	{
-		tmp = ft_strcat_smart(str, args[i]);
+		tmp = ft_strcat(str, args[i]);
 		if (!tmp)
 		{
 			free(str);

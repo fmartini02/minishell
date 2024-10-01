@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   dollar_case_utils.c                                :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/26 16:08:24 by fmartini          #+#    #+#             */
-/*   Updated: 2024/04/09 16:36:46 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/09/30 18:11:24 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,16 +19,16 @@ void	ft_dq_utils(char **str, const char *s, int *i, int *j)
 
 	k = 0;
 	doll_cont = ft_doll_case((char*)s, *i + *j);//getting var value
-	while (doll_cont[k] != '\0')
+	while (doll_cont[k])
 	{
 		(*str)[*j] = doll_cont[k];//swapping var name for var value
 		(*j)++;
 		k++;
 	}
-	*j -= k;
+	*j -= k;//going back to the end of the var value
 	while (s[*i + *j] != ' ' && s[*i + *j])//skipping var name
 		(*i)++;
-	*j += k;
+	*j += k;//adding var value len
 }
 
 char	*ft_doll_case(char *s, int i)
@@ -46,7 +46,9 @@ char	*ft_doll_case(char *s, int i)
 	doll_var = ft_get_var_name(s, doll_var, i, 0);//getting var name
 	var_value = getenv(doll_var);//getting env var line <var_name>=<var_value>
 	free(doll_var);
-	return (var_value);
+	if (!var_value)
+		return (NULL);
+	return (ft_strdup(var_value));//returning var value
 }
 
 char	*ft_get_var_name(const char *s, char *doll_var, int i, int j)

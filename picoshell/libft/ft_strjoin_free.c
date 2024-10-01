@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/26 17:24:06 by francema          #+#    #+#             */
-/*   Updated: 2024/09/26 18:02:36 by francema         ###   ########.fr       */
+/*   Updated: 2024/09/30 17:23:23 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -26,7 +26,7 @@ char	*ft_strjoin_free(char *s1, char *s2)
 	if (!str)
 		return (NULL);
 	ft_strcpy(str, (const char*)s1);
-	ft_strcat_smart(str, (char *)s2);
+	ft_strcat(str, (char *)s2);
 	free(s1);
 	return (str);
 }
