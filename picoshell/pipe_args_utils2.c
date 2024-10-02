@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:58:40 by francema          #+#    #+#             */
-/*   Updated: 2024/10/01 15:30:46 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/02 18:42:18 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,6 +48,7 @@ char	**ft_populate_mtx(t_tok *tok, char **args_mat, int *i)
 		else if (line[*i] != '|')
 			args_mat[i_mat] = ft_w_pop_utils(i, line);// normal case populating
 		i_mat++;
+		*i = ft_skip_spaces(line, *i);// skip spaces
 	}
 	args_mat[i_mat] = NULL;//putting end of matrix
 	return (args_mat);

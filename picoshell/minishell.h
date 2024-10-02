@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/09/26 15:34:16 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/02 18:54:51 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -92,7 +92,7 @@ char		*ft_extract_cmd_name(const char *s, int *i);
 char		**ft_get_cmds_names_from_line(t_tok *tok);
 char		**ft_populate_mtx(t_tok *tok, char **args_mat, int *i);
 char		***ft_set_cmds_args(t_tok *tok);
-void		ft_pipe_utils(t_tok *tok, char *path, char **args);
+void		ft_pipe_utils_2(t_tok *tok, char *path, char **args);
 int			ft_only_spaces(char *line);
 int			**ft_init_pipes(t_tok *tok);
 int			ft_vars_len(const char *s);

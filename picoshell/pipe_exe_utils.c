@@ -6,13 +6,13 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/01 16:26:14 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/02 18:54:30 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pipe_utils(t_tok *tok,char *path, char **args)//i at the beginning is 0
+void	ft_pipe_utils_2(t_tok *tok,char *path, char **args)//i at the beginning is 0
 {
 	if (tok->builtin_flag == 1 && tok->pipe_flag == 0)
 	{
