@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/02 18:54:30 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:27:16 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -28,7 +28,7 @@ void	ft_pipe_utils_2(t_tok *tok,char *path, char **args)//i at the beginning is 
 			if (ft_builtins_cmds(tok, args) == 1)//if the command is a builtin
 				exit(EXIT_SUCCESS);
 			execve(path, args, ft_lst_2_mtx(tok->env));//getting args and executing
-			ft_perror(tok, "execve failed", 1);
+			perror("execve failed");
 		}
 		else if (tok->i == 0 && ft_matlen((void**)tok->cmds) > 1)
 			ft_first_child(tok, path, args);
@@ -64,7 +64,7 @@ void	ft_first_child(t_tok *tok, char *path, char **args)
 	env = ft_lst_2_mtx(tok->env);
 	ft_close_pipe(tok, tok->i, tok->i);//closing unused pipes in this process
 	if (dup2(tok->pipes[tok->i][WRITE_END], STDOUT_FILENO) == -1)//redirecting the output of the command to the write end of the pipe
-		ft_perror(tok, "dup2 failed", 1);
+		perror("dup2 failed");
 	close(tok->pipes[tok->i][READ_END]);
 	close(tok->pipes[tok->i][WRITE_END]);
 	if (tok->builtin_flag == 1)//if the command is a builtin
@@ -85,7 +85,7 @@ void	ft_first_child(t_tok *tok, char *path, char **args)
 	execve(path, args, env);
 	if (errno != 0)
 	{
-		ft_perror(tok, "execve failed", 1);
+		perror("execve failed");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -98,7 +98,7 @@ void	ft_succ_childs(t_tok *tok, char *path, char **args)
 	ft_close_pipe(tok, (tok->i-1), tok->i);
 	if (dup2(tok->pipes[tok->i-1][READ_END], STDIN_FILENO) == -1
 		|| dup2(tok->pipes[tok->i][WRITE_END], STDOUT_FILENO) == -1)
-		ft_perror(tok, "dup2 failed", 1);
+		perror("dup2 failed");
 	close(tok->pipes[tok->i-1][READ_END]);
 	close(tok->pipes[tok->i-1][WRITE_END]);
 	close(tok->pipes[tok->i][WRITE_END]);
@@ -108,7 +108,7 @@ void	ft_succ_childs(t_tok *tok, char *path, char **args)
 	execve(path, args , env);
 	if (errno != 0)
 	{
-		ft_perror(tok, "execve failed", 1);
+		perror("execve failed");
 		exit(EXIT_FAILURE);
 	}
 }
@@ -121,7 +121,7 @@ void	ft_last_child(t_tok *tok, char *path, char **args)
 	tok->last_child_flag = 1;
 	ft_close_pipe(tok, (tok->i - 1), (tok->i - 1));
 	if (dup2(tok->pipes[tok->i - 1][READ_END], STDIN_FILENO) == -1)
-		ft_perror(tok, "dup2 failed", 1);
+		perror("dup2 failed");
 	close(tok->pipes[tok->i - 1][READ_END]);
 	close(tok->pipes[tok->i - 1][WRITE_END]);
 	if (tok->builtin_flag == 1)
@@ -129,7 +129,7 @@ void	ft_last_child(t_tok *tok, char *path, char **args)
 	execve(path, args, env);
 	if (errno != 0)
 	{
-		ft_perror(tok, "execve failed", 1);
+		perror("execve failed");
 		exit(EXIT_FAILURE);
 	}
 }

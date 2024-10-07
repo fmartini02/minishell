@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/01 17:32:25 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:02:48 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,18 +22,21 @@ char	*ft_lexer(const char *s, t_tok *tok)
 	char	*temp;
 
 	i = 0;
-	line = ft_init_line(s, tok);
+	line = ft_init_line(s);
 	while (s[i])
 	{
 		if (s[i] == '\'')
 			temp = ft_sngl_q_case(s, &i);
 		else if (s[i] == '"')
 			temp = ft_db_q_case(s, &i);
+		else if (s[i] == '>' || s[i] == '<')
+			temp = ft_lexer_redi_case(s, &i, tok);//set redi_flag to 1 and return the redirection string
 		else
 		 	temp = ft_normal_case(s, &i);
 		line = ft_strjoin_free(line, temp);
 		free(temp);
-		while (s[i] != ' ' && s[i] != '\t' && s[i] && s[i] != '"' && s[i] != '\'')
+		while (s[i] != ' ' && s[i] != '\t' && s[i] && s[i] != '"'
+				&& s[i] != '\'' && s[i] != '>' && s[i] != '<')
 			i++;
 	}
 	return (line);
@@ -69,10 +72,19 @@ char	*ft_select_prompt(void)
 	else
 	{
 		perror("getcwd() error");
-		ft_perror(NULL, "getcwd() error", 1);
 	}
 	prompt = ft_strjoin_free(prompt, "$ ");
 	return (prompt);
+}
+
+void	ft_reset_std_fds(t_tok *tok)
+{
+	if (dup2(tok->stdin_fd, STDIN_FILENO) == -1)
+		perror("minishell: dup2 error");
+	if (dup2(tok->stdout_fd, STDOUT_FILENO) == -1)
+		perror("minishell: dup2 error");
+	if (dup2(tok->stderr_fd, STDERR_FILENO) == -1)
+		perror("minishell: dup2 error");
 }
 
 int	main(int ac, char **av, char **envp)
@@ -96,10 +108,10 @@ int	main(int ac, char **av, char **envp)
 		add_history(s);
 		inputs->str_line = ft_lexer(s, inputs);
 		ft_pipe(inputs);
-		inputs->i = 0;
-		inputs->last_child_flag = 0;
-		inputs->builtin_flag = 0;
 		free(s);
+		ft_free_mem(inputs);
+		ft_reset_std_fds(inputs);
+		ft_initializer(&inputs, &sa);
 	}
 	return (0);
 }

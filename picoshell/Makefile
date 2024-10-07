@@ -2,30 +2,11 @@
 
 NAME = picoshell
 
-SRC = pico_shell.c \
-      lexer_utils.c \
-      signal_handling.c \
-	  ft_initializer.c \
-	  dollar_case_utils.c \
-	  pipe.c \
-	  pipe_exe_utils.c \
-	  pipe_args_pop.c \
-	  pipe_args_utils.c \
-	  pipe_args_utils2.c \
-	  ft_errors.c \
-	  ft_env_shits.c \
-	  ft_utils.c \
-	  ft_builtins_cmds.c \
-	  ft_cd_utils.c \
-	  ft_cd_utils2.c \
-	  ft_cd.c \
-	  ft_echo.c \
-	  ft_pwd.c \
-	  ft_export.c \
-	  ft_env.c \
-	  ft_unset.c \
-	  ft_exit.c \
-	  ft_clear.c \
+SRC = pico_shell.c lexer_utils.c signal_handling.c  ft_initializer.c  dollar_case_utils.c pipe.c \
+	  pipe_exe_utils.c  pipe_args_pop.c  pipe_args_utils.c  pipe_args_utils2.c  ft_errors.c \
+	  ft_env_shits.c ft_utils.c ft_builtins_cmds.c ft_cd_utils.c ft_cd_utils2.c ft_cd.c ft_echo.c \
+	  ft_pwd.c ft_export.c ft_env.c ft_unset.c ft_exit.c ft_clear.c ft_redirections.c ft_redi_utils.c \
+	  ft_stdin_redi.c ft_stdout_redi.c \
 
 OBJ = $(SRC:.c=.o)
 

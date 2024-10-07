@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/02 18:57:42 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:24:17 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,12 +23,12 @@ char	***ft_set_cmds_args(t_tok *tok)
 	i_cmd = 0;
 	cmds_args = malloc (sizeof (char **) * (ft_count_cmds(tok) + 1));//allocating memory for cmds_args + null
 	if (!cmds_args)
-		ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
+		perror("malloc error in ft_set_cmds_args");
 	while (tok->str_line[i])
 	{
 		args_mat = malloc (sizeof (char *) * (ft_args_counting(tok, i) + 1));//allocating memory for args_mat + null + cmd_name
 		if (!args_mat)
-			ft_perror(tok, "malloc error in ft_set_cmds_args", 1);
+			perror("malloc error in ft_set_cmds_args");
 		if (!ft_only_spaces(tok->str_line))
 			i = ft_skip_spaces(tok->str_line, i);//skip spaces
 		args_mat = ft_populate_mtx(tok, args_mat, &i);//setting args_mat
@@ -72,7 +72,7 @@ void	ft_pipe_utils(pid_t pid, t_tok *tok, char *path)
 	int			status;
 
 	if (pid < 0)//checking if the fork failed
-		ft_perror(tok, "fork failed", 1);
+		perror("fork error");
 	else if (pid == 0)//if it's a child process
 		ft_pipe_utils_2(tok, path, tok->cmds_args[tok->i]);
 	else
@@ -90,10 +90,15 @@ void	ft_pipe(t_tok *tok)
 	char		*path;
 
 	ft_set_fields(tok);//setting the fields of the struct
+	ft_builtins_presence(tok);//checking builtins presence
 	while (tok->i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
 	{
+		if (tok->redi_flag == 1)
+		{
+			ft_redi_case(tok);
+		}
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[tok->i]);//getting the path of the command
-		if(!path)
+		if(!path && tok->builtin_presence == 0)//if the command is not found and it's not a builtin
 		{
 			printf("%s: command not found\n", tok->cmds[tok->i]);
 			free(path);

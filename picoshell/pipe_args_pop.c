@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:30:54 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/01 16:31:28 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/07 18:24:46 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,7 +71,7 @@ char	**ft_get_cmds_names_from_line(t_tok *tok)
 	i = 0;
 	cmds_name = malloc (sizeof (char *) * (ft_count_cmds(tok) + 1));// memory allocation for cmds names
 	if (!cmds_name)//memory allocation check
-		ft_perror(tok, "cmds_name memory allocation failed", 1);
+		perror("malloc error in ft_get_cmds_names_from_line");
 	while (tok->str_line[i] != '\0')
 	{
 		cmds_name[i_mat++] = ft_extract_cmd_name(tok->str_line, &i);
@@ -96,7 +96,7 @@ char	*ft_extract_cmd_name(const char *s, int *i)
 	}
 	name = malloc (sizeof (char) * (ft_word_len(s, *i) + 1));// memory allocation for cmd name
 	if (!name)
-		ft_perror(NULL, "name memory allocation failed", 1);
+		perror("malloc error in ft_extract_cmd_name");
 	while(s[*i] && s[*i] != ' ' && s[*i] != '\t')// cycle to get cmd name
 		name[tmp++] = s[(*i)++];
 	name[tmp] = '\0';// putting end of string

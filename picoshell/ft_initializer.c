@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 11:23:59 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/01 15:27:58 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/07 19:00:55 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -34,6 +34,11 @@ void	ft_initializer(t_tok **inputs, struct sigaction *sa)
 	(*inputs)->builtin_flag = -1;
 	(*inputs)->last_child_flag = 0;
 	(*inputs)->pipe_flag = 0;
+	(*inputs)->builtin_presence = 0;
+	(*inputs)->redi_flag = 0;
+	(*inputs)->stdin_fd = dup(STDIN_FILENO);
+	(*inputs)->stdout_fd = dup(STDOUT_FILENO);
+	(*inputs)->stderr_fd = dup(STDERR_FILENO);
 	ft_init_set(&my_set);
 	ft_add_sig_to_set(&my_set);
 	memset(sa, 0, sizeof(struct sigaction));//initialize all fields to 0
