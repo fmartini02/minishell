@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/07 18:24:17 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/24 18:37:41 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,8 @@ char	***ft_set_cmds_args(t_tok *tok)
 	int		i;
 	int		i_cmd;
 
+	if (!ft_count_cmds(tok))//if only spaces or syntx error
+		return (NULL);
 	i = 0;
 	i_cmd = 0;
 	cmds_args = malloc (sizeof (char **) * (ft_count_cmds(tok) + 1));//allocating memory for cmds_args + null
@@ -29,8 +31,6 @@ char	***ft_set_cmds_args(t_tok *tok)
 		args_mat = malloc (sizeof (char *) * (ft_args_counting(tok, i) + 1));//allocating memory for args_mat + null + cmd_name
 		if (!args_mat)
 			perror("malloc error in ft_set_cmds_args");
-		if (!ft_only_spaces(tok->str_line))
-			i = ft_skip_spaces(tok->str_line, i);//skip spaces
 		args_mat = ft_populate_mtx(tok, args_mat, &i);//setting args_mat
 		cmds_args[i_cmd++] = args_mat;
 		if (tok->str_line[i])
@@ -43,18 +43,23 @@ char	***ft_set_cmds_args(t_tok *tok)
 char	*get_cmd_path(char **paths, char *cmd)
 {
 	char	*tmp;
-	char	*command;
+	char	*cmd_path;
+	int		i;
 
+	if (ft_only_spaces(cmd) || !cmd)
+		return (NULL);
+	i = 0;
 	while (*paths)
 	{
-		tmp = ft_strjoin(*paths, "/");//putting '/' at the end of the path /dir/subdir + /
-		command = ft_strjoin(tmp, cmd);//putting cmd at the end of the path /dir/subdir/ + cmd
-		if (access(command, X_OK) == 0)//checking if the path is correct
+		tmp = ft_strjoin_free(*paths, "/");//putting '/' at the end of the path /dir/subdir + /
+		cmd_path = ft_strdup(ft_strjoin_free(tmp, cmd));//putting cmd at the end of the path /dir/subdir/ + cmd
+		if (access(cmd_path, X_OK) == 0)//checking if the path is correct
 		{
-			//free(tmp);
-			return (command);
+			while(paths[i])
+				free(paths[i++]);
+			return (cmd_path);
 		}
-		//free(command);
+		free(cmd_path);
 		paths++;
 	}
 	return (NULL);
@@ -62,8 +67,8 @@ char	*get_cmd_path(char **paths, char *cmd)
 
 void	ft_set_fields(t_tok *tok)
 {
-	tok->cmds_args = ft_set_cmds_args(tok);//setting the commands arguments
-	tok->cmds = ft_get_cmds_names_from_line(tok);//setting the commands names
+	tok->cmds_args = ft_set_cmds_args(tok);//setting the cmd_paths arguments
+	tok->cmds = ft_get_cmds_names_from_line(tok);//setting the cmd_paths names
 	tok->pipes = ft_init_pipes(tok);//initializing the pipes
 }
 
@@ -78,7 +83,7 @@ void	ft_pipe_utils(pid_t pid, t_tok *tok, char *path)
 	else
 		close(tok->pipes[tok->i][WRITE_END]);
 	waitpid(pid, &status, 0);// wait for the child process to finish
-	if (tok->i != 0)// if not the first command, close the read end of the previous pipe
+	if (tok->i != 0)// if not the first cmd_path, close the read end of the previous pipe
 		close(tok->pipes[tok->i - 1][READ_END]);
 	free(path);
 	(tok->i)++;
@@ -90,23 +95,29 @@ void	ft_pipe(t_tok *tok)
 	char		*path;
 
 	ft_set_fields(tok);//setting the fields of the struct
-	ft_builtins_presence(tok);//checking builtins presence
-	while (tok->i < ft_matlen((void **)tok->cmds))//cycle to execute all the commands
+	while (tok->i < ft_matlen((void **)tok->cmds))//cycle to execute all the cmd_paths
 	{
-		if (tok->redi_flag == 1)
+		ft_builtins_presence(tok, tok->i);//set builtin-presence flag for current cmd_path
+		if (tok->redi_flag == 1)//if there is a redirection
 		{
-			ft_redi_case(tok);
+			if (redi_case(tok))
+				return ;
 		}
-		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[tok->i]);//getting the path of the command
-		if(!path && tok->builtin_presence == 0)//if the command is not found and it's not a builtin
+		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[tok->i]);//getting the path of the cmd_path
+		if(!path)
 		{
-			printf("%s: command not found\n", tok->cmds[tok->i]);
-			free(path);
-			return ;
+			if (tok->builtin_presence == 1)//if the cmd_path is a builtin
+				ft_builtins_cmds(tok, tok->cmds_args[tok->i]);
+			else if (ft_only_spaces(tok->cmds[tok->i]) && tok->pipe_flag == 1)//if there is a pipe but the cmd_path is empty
+			{
+				printf("bash: syntax error near unexpected token `|'\n");
+				return ;
+			}
+			else if (ft_only_spaces(tok->cmds[tok->i]))
+				return ;
 		}
-		ft_builtins_cmds(tok, tok->cmds_args[tok->i]);//executing the builtins setting the flag
 		pid = fork();//creating a child process
-		ft_pipe_utils(pid, tok, path);//handle the child process and the execution of the command
+		ft_pipe_utils(pid, tok, path);//handle the child process and the execution of the cmd_path
 	}
 	if (tok->i != 0)// close the read end of the last pipe
 		close(tok->pipes[tok->i - 1][READ_END]);

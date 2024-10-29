@@ -6,14 +6,14 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/07 18:27:16 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/15 17:09:29 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pipe_utils_2(t_tok *tok,char *path, char **args)//i at the beginning is 0
-{
+void	ft_pipe_utils_2(t_tok *tok,char *path, char **args)
+{//i at the beginning is 0
 	if (tok->builtin_flag == 1 && tok->pipe_flag == 0)
 	{
 		tok->builtin_flag = 0;
@@ -72,16 +72,6 @@ void	ft_first_child(t_tok *tok, char *path, char **args)
 		ft_redirect_builtin_output(tok, args);
 		exit(EXIT_SUCCESS);
 	}
-	// printf("adr of args[0] = %p\n", &args[0]);
-	// printf("args[0] = %s\n", args[0]);
-	// printf("adr of args[1] = %p\n", &args[1]);
-	// printf("args[1] = %s\n", args[1]);
-	// printf("adr of args[2] = %p\n", &args[2]);
-	// printf("args[2] = %s\n", args[2]);
-	// printf("adr of args[3] = %p\n", &args[3]);
-	// printf("args[3] = %s\n", args[3]);
-	// printf("adr of args[4] = %p\n", &args[4]);
-	// printf("args[4] = %s\n", args[4]);
 	execve(path, args, env);
 	if (errno != 0)
 	{

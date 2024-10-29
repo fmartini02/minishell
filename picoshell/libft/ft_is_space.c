@@ -1,40 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_is_space.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 16:34:20 by francema          #+#    #+#             */
-/*   Updated: 2024/10/22 17:14:45 by francema         ###   ########.fr       */
+/*   Created: 2024/10/24 16:33:46 by francema          #+#    #+#             */
+/*   Updated: 2024/10/24 16:34:18 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_pwd(t_tok *tok)
+int	ft_is_space(char c)
 {
-	char	*buf;
-
-	if (!tok)
-	{
-		perror("ft_pwd: tok is NULL");
-		return (NULL);
-	}
-	buf = malloc(sizeof(char) * PATH_MAX);
-	if (!buf)
-	{
-		perror("malloc failed");
-		tok->builtin_flag = 0;
-		return (NULL);
-	}
-	if(!getcwd(buf, PATH_MAX))
-	{
-		perror("getcwd failed");
-		tok->builtin_flag = 0;
-		free(buf);
-		return (NULL);
-	}
-	tok->builtin_flag = 1;
-	return (buf);
+	if (c == ' ' || (c >= '\t' && c <= '\r'))
+		return (1);
+	return (0);
 }

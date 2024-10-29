@@ -6,24 +6,11 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/09/19 15:58:40 by francema          #+#    #+#             */
-/*   Updated: 2024/10/07 18:25:14 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/15 16:12:00 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
-
-int	ft_only_spaces(char *line)
-{
-	int	i;
-
-	i = 0;
-	while (line[i] && (line[i] == ' ' || line[i] == '\t'))
-		i++;
-	if (line[i] == '\0')
-		return (1);
-	else
-		return (0);
-}
 
 char	**ft_populate_mtx(t_tok *tok, char **args_mat, int *i)
 {
@@ -32,12 +19,6 @@ char	**ft_populate_mtx(t_tok *tok, char **args_mat, int *i)
 
 	line = tok->str_line;
 	i_mat = 0;
-	if (ft_only_spaces(line))
-	{
-		args_mat[i_mat] = ft_strdup(" \0");
-		args_mat[i_mat + 1] = NULL;
-		return (args_mat);
-	}
 	while (line[*i] && (line[*i] != '|'))// cycle to populate args_mat
 	{
 		*i = ft_skip_spaces(line, *i);// skip spaces
@@ -60,6 +41,7 @@ int	**ft_init_pipes(t_tok *tok)
 	int	i;
 
 	i = 0;
+	//printf("ft_count_cmds(tok) = %d + 1 \n", ft_count_cmds(tok));
 	pip = malloc (sizeof (int *) * (ft_count_cmds(tok) + 1));//allocating memory for pipes + null
 	if (!pip)
 		perror("malloc error in ft_init_pipes");

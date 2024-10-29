@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:47:06 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/03 15:54:00 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/14 17:06:45 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -29,20 +29,20 @@ int ft_count_words(const char *s)
 	return (word_count);
 }
 
-void	ft_builtins_presence(t_tok *tok)
+void	ft_builtins_presence(t_tok *tok, int i)
 {
-	int	i;
-
-	i = 0;
-	while (tok->cmds_args[i])
+	if (!tok->cmds_args)
 	{
-		if (!ft_strcmp(tok->cmds_args[i][0], "cd") || !ft_strcmp(tok->cmds_args[i][0], "echo")
-			|| !ft_strcmp(tok->cmds_args[i][0], "pwd") || !ft_strcmp(tok->cmds_args[i][0], "export")
-			|| !ft_strcmp(tok->cmds_args[i][0], "env") || !ft_strcmp(tok->cmds_args[i][0], "unset")
-			|| !ft_strcmp(tok->cmds_args[i][0], "exit") || !ft_strcmp(tok->cmds_args[i][0], "clear"))
-			tok->builtin_presence = 1;
-		i++;
+		tok->builtin_presence = 0;
+		return ;
 	}
+	if (!ft_strcmp(tok->cmds_args[i][0], "cd") || !ft_strcmp(tok->cmds_args[i][0], "echo")
+		|| !ft_strcmp(tok->cmds_args[i][0], "pwd") || !ft_strcmp(tok->cmds_args[i][0], "export")
+		|| !ft_strcmp(tok->cmds_args[i][0], "env") || !ft_strcmp(tok->cmds_args[i][0], "unset")
+		|| !ft_strcmp(tok->cmds_args[i][0], "exit") || !ft_strcmp(tok->cmds_args[i][0], "clear"))
+			tok->builtin_presence = 1;
+	else
+		tok->builtin_presence = 0;
 }
 
 int	ft_vars_len(const char *s)

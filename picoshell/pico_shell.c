@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/07 19:02:48 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/29 17:38:37 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ char	*ft_lexer(const char *s, t_tok *tok)
 		else if (s[i] == '>' || s[i] == '<')
 			temp = ft_lexer_redi_case(s, &i, tok);//set redi_flag to 1 and return the redirection string
 		else
-		 	temp = ft_normal_case(s, &i);
+		 	temp = ft_strdup(ft_normal_case(s, &i));
 		line = ft_strjoin_free(line, temp);
 		free(temp);
 		while (s[i] != ' ' && s[i] != '\t' && s[i] && s[i] != '"'
@@ -99,9 +99,9 @@ int	main(int ac, char **av, char **envp)
 	ft_initializer(&inputs,&sa);
 	ft_signal_ear(&sa);
 	pipe(pipe_fd);
-	inputs->env = ft_set_env(envp);
 	while (1)
 	{
+		inputs->env = ft_set_env(envp);
 		s = readline(ft_select_prompt());
 		if (!s)
 			ctrl_d_case();

@@ -1,40 +1,31 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   redi_utils2.c                                      :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 16:34:20 by francema          #+#    #+#             */
-/*   Updated: 2024/10/22 17:14:45 by francema         ###   ########.fr       */
+/*   Created: 2024/10/07 15:51:10 by francema          #+#    #+#             */
+/*   Updated: 2024/10/26 17:17:22 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-char	*ft_pwd(t_tok *tok)
+char	*ft_lexer_redi_case(const char *s, int *i, t_tok *tok)
 {
-	char	*buf;
+	char	*ret;
+	int		j;
 
-	if (!tok)
-	{
-		perror("ft_pwd: tok is NULL");
+	j = 0;
+	tok->redi_flag = 1;
+	ret = malloc(sizeof(char) * (ft_strlen_till_char((char *)s, *i, ' ') + 1));
+	if (!ret)
 		return (NULL);
-	}
-	buf = malloc(sizeof(char) * PATH_MAX);
-	if (!buf)
+	while (s[*i] && s[*i] != ' ')
 	{
-		perror("malloc failed");
-		tok->builtin_flag = 0;
-		return (NULL);
+		ret[j++] = s[(*i)++];
 	}
-	if(!getcwd(buf, PATH_MAX))
-	{
-		perror("getcwd failed");
-		tok->builtin_flag = 0;
-		free(buf);
-		return (NULL);
-	}
-	tok->builtin_flag = 1;
-	return (buf);
+	ret[j] = '\0';
+	return (ret);
 }

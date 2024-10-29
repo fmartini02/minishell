@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/07 18:28:36 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/10 16:45:38 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,7 +73,7 @@ char	*ft_norm_case_utils(const char *s, int *i)
 		{
 			doll = ft_doll_case((char *)s, *i);
 			temp = ft_strjoin_free(temp, doll);//str is freed in ft_strjoin_free
-			*i += ft_word_len(s, *i) - 1;//skip variable name
+			*i += ft_word_len(s, *i) - 1;//skip variable name (-1 because of the incrementation in the while loop)
 			j += ft_strlen(doll);//add variable value len
 			free(doll);//doll is malloced in ft_doll_case
 		}

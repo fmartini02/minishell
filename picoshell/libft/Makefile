@@ -22,7 +22,8 @@ SRCS		= ft_isalpha.c ft_isdigit.c ft_isalnum.c ft_isascii.c \
 		  ft_strcpy_till_char.c ft_strlen_till_char.c ft_matlen.c \
 		  ft_word_len.c ft_skip_spaces.c ft_print_mat.c ft_strcmp.c \
 		  ft_print_list.c ft_putstr.c ft_strjoin_free.c ft_strcpy.c \
-		  ft_get_word_from_indx.c \
+		  ft_get_word_from_indx.c ft_is_space.c ft_strlen_till_space.c\
+		  ft_next_char_indx.c
 
 SRCS_BONUS	= ft_lstnew.c ft_lstadd_front.c ft_lstsize.c \
 			ft_lstlast.c ft_lstadd_back.c ft_lstdelone.c \

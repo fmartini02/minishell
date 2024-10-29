@@ -60,8 +60,12 @@ void	ft_putstr(const char *s);
 void	ft_putendl_fd(char *s, int fd);
 void	ft_putnbr_fd(int n, int fd);
 void	ft_print_mat(char **mat);
+void	ft_print_list(void *head);
 char	*ft_strncpy(char *dst, const char *src, size_t len);
 char	*ft_get_word_from_indx(char *s, int i);
+int		ft_is_space(char c);
+int		ft_strlen_till_space(const char *s, int i);
+int		ft_next_char_indx(char *s, int i, char c);
 
 typedef struct s_list
 {

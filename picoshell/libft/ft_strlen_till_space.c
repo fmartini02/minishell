@@ -1,40 +1,20 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   ft_pwd.c                                           :+:      :+:    :+:   */
+/*   ft_strlen_till_space.c                             :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2024/09/13 16:34:20 by francema          #+#    #+#             */
-/*   Updated: 2024/10/22 17:14:45 by francema         ###   ########.fr       */
+/*   Created: 2024/10/26 17:42:19 by francema          #+#    #+#             */
+/*   Updated: 2024/10/28 16:03:52 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-#include "minishell.h"
+#include "libft.h"
 
-char	*ft_pwd(t_tok *tok)
+int	ft_strlen_till_space(const char *s, int i)
 {
-	char	*buf;
-
-	if (!tok)
-	{
-		perror("ft_pwd: tok is NULL");
-		return (NULL);
-	}
-	buf = malloc(sizeof(char) * PATH_MAX);
-	if (!buf)
-	{
-		perror("malloc failed");
-		tok->builtin_flag = 0;
-		return (NULL);
-	}
-	if(!getcwd(buf, PATH_MAX))
-	{
-		perror("getcwd failed");
-		tok->builtin_flag = 0;
-		free(buf);
-		return (NULL);
-	}
-	tok->builtin_flag = 1;
-	return (buf);
+	while (s[i] && s[i] != ' ' && !(s[i] >= '\t' && s[i] <= '\r'))
+		i++;
+	return (i);
 }

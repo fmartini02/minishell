@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/08 15:57:26 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/07 18:22:13 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/10 17:00:29 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -23,6 +23,7 @@ void	ft_free_cmds_args(t_tok *tok)
 		j = 0;
 		while (tok->cmds_args[i][j])
 			free(tok->cmds_args[i][j++]);
+		free(tok->cmds_args[i][j]);//to free the NULL at the end of the matrix
 		free(tok->cmds_args[i]);
 		i++;
 	}
