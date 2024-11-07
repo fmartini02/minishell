@@ -6,22 +6,65 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/03 16:09:21 by francema          #+#    #+#             */
-/*   Updated: 2024/10/29 18:21:03 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/07 15:47:00 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
+int	ft_count_redi(char *s)
+{
+	int	i;
+	int	count;
+
+	i = 0;
+	count = 0;
+	while (s[i])
+	{
+		if (s[i] == '<' || s[i] == '>')
+			count++;
+		i++;
+	}
+	return (count);
+}
+
+t_redi	*init_redi(t_tok *tok)
+{
+	t_redi	*redi;
+	char	*s;
+
+	s = tok->str_line;
+	redi = malloc(sizeof(t_redi));
+	if (!redi)
+	{
+		perror("minishell: malloc error");
+		return (NULL);
+	}
+	redi->fd_after = -1;
+	redi->fd_before = -1;
+	redi->id = -1;
+	redi->tok = tok;
+	redi->file = NULL;
+	redi->ret_code = 0;
+	redi->s = ft_strdup(s);
+	redi->n_redi = ft_count_redi(s);
+	redi->cur_i = ft_find_redi_indx(s);
+	return (redi);
+}
 
 int	redi_exe_utils(t_redi *redi, int i)
 {
 	if (redi->s[i] == '<')
 	{
+		redi->fd_before = STDIN_FILENO;
+		redi->id = STDIN_FILENO;
 		if (redi_stdin(redi))
 			return (1);
 	}
 	else if (redi->s[i] == '>')
 	{
+		redi->fd_before = STDOUT_FILENO;
+		redi->id = STDOUT_FILENO;
 		if (redi_stdout(redi))
 			return (1);
 	}
@@ -54,24 +97,6 @@ int	redi_exe(t_redi *redi)
 	return (0);
 }
 
-t_redi	*init_redi(t_tok *tok)
-{
-	t_redi	*redi;
-
-	redi = malloc(sizeof(t_redi));
-	if (!redi)
-	{
-		perror("minishell: malloc error");
-		return (NULL);
-	}
-	redi->fd = -1;
-	redi->cur_i = ft_find_redi_indx(tok->str_line);
-	redi->ret_code = 0;
-	redi->s = ft_strdup(tok->str_line);
-	redi->file = NULL;
-	redi->tok = tok;
-	return (redi);
-}
 
 int	redi_case(t_tok *tok)
 {
@@ -83,10 +108,13 @@ int	redi_case(t_tok *tok)
 	if (redi_exe(redi))
 		return (1);
 	tok->str_line = rm_redi(redi);
+	i = redi->cur_i;
 	if (redi->s[i] != '<' && redi->s[i] != '>')
 	{
-		ft_free_cmds_args(tok);
+		free_cmds_args(tok);
+		free_cmds(tok);
 		tok->cmds_args = ft_set_cmds_args(tok);
+		tok->cmds = ft_get_cmds_names_from_line(tok);
 	}
 	return (0);
 }

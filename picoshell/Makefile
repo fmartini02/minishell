@@ -3,11 +3,11 @@
 NAME = picoshell
 
 SRC = pico_shell.c lexer_utils.c signal_handling.c  ft_initializer.c  dollar_case_utils.c pipe.c \
-	  pipe_exe.c pipe_args_utils.c  pipe_args_utils2.c  ft_errors.c \
-	  ft_env_shits.c ft_utils.c ft_builtins_cmds.c ft_cd_utils.c ft_cd_utils2.c ft_cd.c ft_echo.c \
-	  ft_pwd.c ft_export.c ft_env.c ft_unset.c ft_exit.c ft_clear.c redi_utils.c \
+	  pipe_exe.c pipe_args_utils.c  pipe_args_utils2.c  ft_errors.c ft_env_shits.c ft_env.c \
+	  ft_utils.c ft_builtins_cmds.c ft_cd_utils.c ft_cd_utils2.c ft_cd.c ft_echo.c \
+	  ft_pwd.c ft_export.c ft_unset.c ft_exit.c redi.c ft_clear.c redi_utils.c \
 	  redi_stdin.c redi_stdout.c pipe_utils.c pipe_pop_utils.c pipe_pop.c \
-	  redi_amper_utils.c redi_edge_cases.c redi_utils2.c redi.c rm_redi.c \
+	  redi_amper.c redi_edge_cases.c redi_utils2.c rm_redi.c  rm_redi_utils.c\
 
 OBJ = $(SRC:.c=.o)
 

@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/07/15 15:28:03 by francema          #+#    #+#             */
-/*   Updated: 2024/09/30 15:21:55 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:03:56 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -90,7 +90,7 @@ int	ft_builtins_cmds(t_tok *tok, char **args)
 {
 	if (tok->pipe_flag == 1)
 		return (0);
-	if (!ft_strcmp(args[0], "echo") && !ft_strcmp(args[1], "-n"))
+	if (!ft_strcmp(args[0], "echo") && args[1] && !ft_strcmp(args[1], "-n"))
 		ft_putstr(ft_echo(tok, args));
 	else if (!ft_strcmp(args[0], "pwd"))
 		printf("%s\n", ft_pwd(tok));

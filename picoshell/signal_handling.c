@@ -3,17 +3,18 @@
 /*                                                        :::      ::::::::   */
 /*   signal_handling.c                                  :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: fmartini <marvin@42.fr>                    +#+  +:+       +#+        */
+/*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/01 16:10:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/03/20 11:21:59 by fmartini         ###   ########.fr       */
+/*   Updated: 2024/11/05 19:45:33 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ctrl_d_case(void)
+void	ctrl_d_case(t_tok *tok)
 {
+	ft_free_mem(tok);
 	printf("exit\n");
 	exit(EXIT_SUCCESS);
 }
@@ -21,7 +22,6 @@ void	ctrl_d_case(void)
 int	ctrl_c_case(int signum)
 {
 	write(1, "\n", 1);
-	write(1, "minishell$ ", 11);
 	return (signum);
 }
 

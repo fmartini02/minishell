@@ -1,24 +1,32 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_exe_utils.c                                   :+:      :+:    :+:   */
+/*   pipe_exe.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:22:27 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/15 17:09:29 by francema         ###   ########.fr       */
+/*   Updated: 2024/10/30 17:58:50 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	ft_pipe_utils_2(t_tok *tok,char *path, char **args)
-{//i at the beginning is 0
+void	ft_pipe_utils_2(t_tok *tok,char *path)
+{
+	char	**args;
+
 	if (tok->builtin_flag == 1 && tok->pipe_flag == 0)
 	{
 		tok->builtin_flag = 0;
 		exit(EXIT_SUCCESS);
 	}
+	if (tok->redi_flag == 1)//if there is a redirection
+	{
+		if (redi_case(tok))
+			exit(EXIT_FAILURE);
+	}
+	args = tok->cmds_args[tok->i];
 	while (1)
 	{
 		if (ft_matlen((void**)tok->cmds) == 1)//if there is only one command

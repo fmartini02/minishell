@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:24:31 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/28 18:12:14 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:18:30 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -53,11 +53,12 @@ typedef struct s_env
 typedef struct s_redi
 {
 	struct s_tok	*tok;
-	int				fd;
-	int				tmp_i;
+	int				fd_after;
+	int				fd_before;
+	int				id;
 	int				cur_i;
 	int				ret_code;
-	int				amper_flag;
+	int				n_redi;
 	char			*s;
 	char			*file;
 }	t_redi;
@@ -82,12 +83,10 @@ typedef struct s_tok
 
 char		*ft_db_q_case(const char *s, int *i);
 char		*ft_normal_case(const char *s, int *i);
-char		*str_init_in_normal_case(const char *s);
 void		handle_nwline_in_norm_case(char *str, int *i, int *j);
 char		*ft_sngl_q_case(const char *s, int *i);
 void		ft_add_sig_to_set(sigset_t *my_set);
-void		ft_init_set(sigset_t *my_set);
-void		ctrl_d_case(void);
+void		ctrl_d_case(t_tok *tok);
 int			ctrl_c_case(int signum);
 int			ctrl_z_case(int signum);
 int			ctrl_bckslash_case(int num);
@@ -98,6 +97,7 @@ void		ft_bzero(void *s, size_t n);
 int			ft_count_words(const char *s);
 void		ft_signal_ear(struct sigaction *sa);
 void		ft_initializer(t_tok **inputs, struct sigaction *sa);
+int			find_redi_indx(char *s);
 int			ft_find_dq_len(const char *s, int i);
 char		*ft_doll_case(char *s, int i);
 void		ft_dq_utils(char **str, const char *s, int *i, int *j);
@@ -120,7 +120,7 @@ char		*ft_extract_quote_case(const char *s, int *i);
 char		**ft_get_cmds_names_from_line(t_tok *tok);
 char		**ft_populate_mtx(t_tok *tok, char **args_mat, int *i);
 char		***ft_set_cmds_args(t_tok *tok);
-void		ft_pipe_utils_2(t_tok *tok, char *path, char **args);
+void		ft_pipe_utils_2(t_tok *tok, char *path);
 int			ft_only_spaces(char *line);
 int			ft_skip_quoted_words(char *s, int i);
 int			**ft_init_pipes(t_tok *tok);
@@ -153,18 +153,17 @@ char		*ft_strfication(t_env *env);
 int			ft_find_redi_indx(char *args);
 int			ft_redi_presence(char *args);
 char		*ft_lexer_redi_case(const char *s, int *i, t_tok *tok);
-void		amper_neg_sign(t_redi *redi, int i);
-void		amper_utils(t_redi *redi, int i, int id);
+char		*rm_redi_utils(char *s, int *j);
 char		*rm_redi(t_redi *redi);
 int			redi_check_inputs(t_redi *redi, int i);
 void		fd_bf_redi(t_redi *redi, int i);
 int			redi_case(t_tok *tok);
 int			redi_stdin(t_redi *redi);
 int			redi_stdout(t_redi *redi);
+void		ampersand_case(t_redi *redi , int i);
 void		redi_error_msgs(t_redi *redi);
-char		*ft_redi_get_file(char *s);
-int			ft_fd_bf_redi_utils(t_tok *tok, int fd);
-void		ft_free_cmds_args(t_tok *tok);
+void		free_cmds_args(t_tok *tok);
+void		free_cmds(t_tok *tok);
 void		ft_free_mem(t_tok *tok);
 
 #endif

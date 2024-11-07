@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/28 15:58:42 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/10 16:45:38 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/05 18:39:09 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -66,7 +66,7 @@ char	*ft_norm_case_utils(const char *s, int *i)
 	char	*temp;
 
 	j = 0;
-	temp = str_init_in_normal_case(s);
+	temp = ft_strdup(s);
 	while (s[*i] && s[*i] != '"' && s[*i] != 39)
 	{
 		if (s[*i] == '$')

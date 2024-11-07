@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/02/27 15:22:36 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/29 17:38:37 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/05 19:56:55 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,14 +65,12 @@ char	*ft_select_prompt(void)
 		if (!ft_strcmp(tmp, home))
 			prompt = ft_strdup("~");
 		else if(!ft_strncmp(tmp, home, ft_strlen(home)))
-			prompt = ft_strjoin_free(ft_strdup((const char *)"~"), tmp + ft_strlen(home) + 1);
+			prompt = ft_strjoin_free(ft_strdup("~"), tmp + ft_strlen(home) + 1);
 		else
 			prompt = ft_strdup(tmp);
 	}
 	else
-	{
 		perror("getcwd() error");
-	}
 	prompt = ft_strjoin_free(prompt, "$ ");
 	return (prompt);
 }
@@ -89,29 +87,32 @@ void	ft_reset_std_fds(t_tok *tok)
 
 int	main(int ac, char **av, char **envp)
 {
-	char				*s;
-	t_tok				*inputs;
 	struct sigaction	sa;
-	int					pipe_fd[2];
+	t_tok				*inputs;
+	char				*s;
+	char				*prompt;
 
 	(void)ac;
 	(void)av;
 	ft_initializer(&inputs,&sa);
 	ft_signal_ear(&sa);
-	pipe(pipe_fd);
 	while (1)
 	{
 		inputs->env = ft_set_env(envp);
-		s = readline(ft_select_prompt());
+		prompt = ft_select_prompt();
+		s = readline(prompt);
 		if (!s)
-			ctrl_d_case();
+		{
+			free(prompt);
+			ctrl_d_case(inputs);
+		}
 		add_history(s);
-		inputs->str_line = ft_lexer(s, inputs);
+		inputs->str_line = ft_strdup(ft_lexer(s, inputs));
 		ft_pipe(inputs);
-		free(s);
 		ft_free_mem(inputs);
 		ft_reset_std_fds(inputs);
 		ft_initializer(&inputs, &sa);
+		free(s);
 	}
 	return (0);
 }

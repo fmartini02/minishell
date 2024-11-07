@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 11:03:14 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/24 18:37:41 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/05 15:50:03 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -49,18 +49,22 @@ char	*get_cmd_path(char **paths, char *cmd)
 	if (ft_only_spaces(cmd) || !cmd)
 		return (NULL);
 	i = 0;
-	while (*paths)
+	while (paths[i])
 	{
-		tmp = ft_strjoin_free(*paths, "/");//putting '/' at the end of the path /dir/subdir + /
+		tmp = ft_strjoin_free(ft_strdup(paths[i]), "/");//putting '/' at the end of the path /dir/subdir + /
 		cmd_path = ft_strdup(ft_strjoin_free(tmp, cmd));//putting cmd at the end of the path /dir/subdir/ + cmd
 		if (access(cmd_path, X_OK) == 0)//checking if the path is correct
 		{
+			i = 0;
 			while(paths[i])
-				free(paths[i++]);
+			{
+				free(paths[i]);
+				i++;
+			}
 			return (cmd_path);
 		}
 		free(cmd_path);
-		paths++;
+		i++;
 	}
 	return (NULL);
 }
@@ -79,7 +83,7 @@ void	ft_pipe_utils(pid_t pid, t_tok *tok, char *path)
 	if (pid < 0)//checking if the fork failed
 		perror("fork error");
 	else if (pid == 0)//if it's a child process
-		ft_pipe_utils_2(tok, path, tok->cmds_args[tok->i]);
+		ft_pipe_utils_2(tok, path);
 	else
 		close(tok->pipes[tok->i][WRITE_END]);
 	waitpid(pid, &status, 0);// wait for the child process to finish
@@ -98,11 +102,6 @@ void	ft_pipe(t_tok *tok)
 	while (tok->i < ft_matlen((void **)tok->cmds))//cycle to execute all the cmd_paths
 	{
 		ft_builtins_presence(tok, tok->i);//set builtin-presence flag for current cmd_path
-		if (tok->redi_flag == 1)//if there is a redirection
-		{
-			if (redi_case(tok))
-				return ;
-		}
 		path = get_cmd_path(ft_split(getenv("PATH"), ':'), tok->cmds[tok->i]);//getting the path of the cmd_path
 		if(!path)
 		{
@@ -115,6 +114,9 @@ void	ft_pipe(t_tok *tok)
 			}
 			else if (ft_only_spaces(tok->cmds[tok->i]))
 				return ;
+			else
+				printf("%s: command not found\n", tok->cmds[tok->i]);
+			return ;
 		}
 		pid = fork();//creating a child process
 		ft_pipe_utils(pid, tok, path);//handle the child process and the execution of the cmd_path

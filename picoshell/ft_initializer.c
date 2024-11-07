@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/20 11:23:59 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/09 18:10:42 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/05 19:49:17 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -14,10 +14,29 @@
 
 void	handle_signals(int signum);
 
-void	ft_init_set(sigset_t *my_set)
+int	find_redi_indx(char *s)
 {
-	if (sigemptyset(my_set) == -1)
-		perror("sigemptyset failed");
+	int	i;
+	int	redi_indx;
+	int	pipe_num;
+
+	i = 0;
+	pipe_num = 0;
+	redi_indx = -1;
+	while (s[i] && redi_indx < 0)
+	{
+		while(s[i] && s[i] != '|')
+		{
+			if (s[i] == '<' || s[i] == '>')
+				redi_indx = pipe_num;
+			i++;
+		}
+		if (s[i] == '|')
+			pipe_num++;
+		if (s[i])
+			i++;
+	}
+	return (redi_indx);
 }
 
 void	ft_initializer(t_tok **inputs, struct sigaction *sa)
@@ -31,6 +50,10 @@ void	ft_initializer(t_tok **inputs, struct sigaction *sa)
 		exit(EXIT_FAILURE);
 	}
 	(*inputs)->i = 0;
+	(*inputs)->str_line = NULL;
+	(*inputs)->cmds = NULL;
+	(*inputs)->cmds_args = NULL;
+	(*inputs)->pipes = NULL;
 	(*inputs)->builtin_flag = -1;
 	(*inputs)->last_child_flag = 0;
 	(*inputs)->pipe_flag = 0;
@@ -39,7 +62,8 @@ void	ft_initializer(t_tok **inputs, struct sigaction *sa)
 	(*inputs)->stdin_fd = dup(STDIN_FILENO);
 	(*inputs)->stdout_fd = dup(STDOUT_FILENO);
 	(*inputs)->stderr_fd = dup(STDERR_FILENO);
-	ft_init_set(&my_set);
+	if (sigemptyset(&my_set) == -1)
+		perror("sigemptyset failed");
 	ft_add_sig_to_set(&my_set);
 	memset(sa, 0, sizeof(struct sigaction));//initialize all fields to 0
 	sa->sa_handler = &handle_signals;

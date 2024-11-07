@@ -1,12 +1,12 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   pipe_args_pop.c                                    :+:      :+:    :+:   */
+/*   pipe_pop.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/03/28 17:30:54 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/15 16:21:30 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/07 19:15:47 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -48,22 +48,34 @@ char	*ft_q_pop_utils(int *i, char *line)
 	return (tmp);
 }
 
-char	*ft_w_pop_utils(int *i, char *line)
+char	*ft_w_pop_utils(int *j, char *line)
 {//function to pop normal parameters
 	int		tmp_i;
 	char	*tmp;
-	int		j;
+	int		i;
+	int		size;
 
-	j = ft_skip_spaces(line, *i);// skip spaces
-	if (line[j])
-		tmp = malloc (sizeof (char) * (ft_strlen_till_char(line, j, ' ') + 1));//allocating memory for args
+	i = ft_skip_spaces(line, *j);// skip spaces
+	size = 0;
+	if (line[i])
+	{
+		while (line[i] && !ft_is_space(line[i])
+				&& line[i] != '|' && line[i] != '"' && line[i] != '\'')
+		{
+			size++;
+			i++;
+		}
+		tmp = malloc (sizeof (char) * (size + 1));//allocating memory for args
+	}
 	else
 		return (NULL);
 	tmp_i = 0;
-	while (line[j] && line[j] != ' ' && line[j] != '\t' && line[j] != '|')
-		tmp[tmp_i++] = line[j++];//populating args
+	i = *j;
+	while (line[i] && !ft_is_space(line[i]) && line[i] != '|'
+			&& line[i] != '"' && line[i] != '\'')
+		tmp[tmp_i++] = line[i++];//populating args
 	tmp[tmp_i] = '\0';//putting end of string
-	*i = j;
+	*j = i;
 	return (tmp);
 }
 

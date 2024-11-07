@@ -1,39 +1,56 @@
 /* ************************************************************************** */
 /*                                                                            */
 /*                                                        :::      ::::::::   */
-/*   redi_amper_utils.c                                 :+:      :+:    :+:   */
+/*   redi_amper.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 14:40:17 by francema          #+#    #+#             */
-/*   Updated: 2024/10/29 18:37:40 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:12:52 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "minishell.h"
 
-void	amper_utils(t_redi *redi, int i, int id)
+void	amper_utils_2(t_redi *redi)
 {
+	char	*s;
+	int		fd;
+	int		id;
+
+	s = redi->file;
+	fd = -1;
+	id = redi->id;
+	if (id == STDIN_FILENO && ft_atoi(s) != STDIN_FILENO)
+		fd = open((const char *)s, O_RDONLY);
+	else if (id == STDOUT_FILENO && ft_atoi(s) != STDOUT_FILENO)
+		fd = open((const char *)s, O_WRONLY | O_CREAT | O_TRUNC, 0744);
+	else
+		fd = ft_atoi(s);
+	redi->fd_after = fd;
+}
+void	amper_utils(t_redi *redi, int i)
+{// s[i] is '&'
 	char	*s;
 
 	s = redi->s;
 	redi->file = ft_get_word_from_indx(s, i + 1);
 	if (ft_atoi(redi->file) < 0)
-	{
+	{// if the fd is neg ; if its a word atoi returns 0
 		printf("minishell: %s: Bad file descriptor\n", redi->file);
 		redi->ret_code = INPUTS_ERR;
 		return ;
 	}
 	if (!redi->file || !redi->file[0])
 		redi->ret_code = SYNTX;//check if the file name is valid
-	if (!redi->ret_code && id == STDIN_FILENO)//< case
-		redi->fd = open((const char *)redi->file, O_RDONLY);
-	else if (!redi->ret_code && id == STDOUT_FILENO)//> case
-		redi->fd = open((const char *)redi->file, O_WRONLY | O_CREAT | O_TRUNC, 0744);
-	if (!redi->ret_code && redi->fd == -1)//fd check
+	amper_utils_2(redi);
+	if (!redi->ret_code && redi->fd_after == -1)//fd check
 		redi->ret_code = OPEN_ERR;
+	close(redi->fd_before);
+	if (dup(redi->fd_after) == -1)//dup2 check
+		redi->ret_code = DUP2_ERR;
 	if (!redi->ret_code)
-		redi->cur_i = ft_next_char_indx(s, i, ' ');
+		redi->cur_i = i;
 	free(redi->file);
 }
 
@@ -58,6 +75,20 @@ void	amper_neg_sign(t_redi *redi, int i)
 			return ;
 		}
 	}
-	if (s[i - 2] >= '0' && s[i - 2] <= '9')
-		close(STDIN_FILENO);//previusly opened fd is now in stdin
+	close(redi->fd_before);
+}
+
+void	ampersand_case(t_redi *redi , int i)
+{//i is to '&'
+	char	*s;
+
+	s = redi->s;
+	if (ft_is_space(s[i + 1]))
+		i = ft_skip_spaces(s, i + 1);
+	if (s[i + 1] == '-' || s[i] == '-')// '&-' and '& -' case
+	{
+		amper_neg_sign(redi, i);
+		return ;
+	}
+	amper_utils(redi, i);
 }

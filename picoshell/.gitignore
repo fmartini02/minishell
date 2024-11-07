@@ -4,6 +4,7 @@ ciao.txt
 temp.c
 libft/.git
 libft/libft.a
+sup_file_gen.sh
 *.o
 ../aborti/
 ../TO_FIX/

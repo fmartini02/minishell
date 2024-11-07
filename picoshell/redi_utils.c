@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/10/23 15:48:28 by francema          #+#    #+#             */
-/*   Updated: 2024/10/28 18:00:47 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/07 16:18:59 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -32,7 +32,7 @@ int	ft_find_redi_indx(char *args)
 	int	i;
 
 	i = 0;
-	while(args[i] && args[i] != '|')
+	while(args[i])
 	{
 		if (args[i] == '<' || args[i] == '>')
 			return (i);
@@ -59,27 +59,11 @@ void	fd_bf_redi(t_redi *redi, int i)
 {
 	char	*s;
 	int		fd;
-	int		id;
 
 	s = redi->s;
 	fd = -1;
-	if (s[i] == '<')
-		id = STDIN_FILENO;
-	else if (s[i] == '>')
-		id = STDOUT_FILENO;
 	while (i >= 0 && s[i] >= '0' && s[i] <= '9')
 		i--;
 	fd = ft_atoi(&s[i]);
-	if (read(fd, NULL, 0) == -1)//check if the fd is valid
-	{
-		printf("minishell: %d: Bad file descriptor\n", fd);
-		redi->ret_code = INPUTS_ERR;
-		return ;
-	}
-	else
-	{
-		close(id);
-		if (dup(fd) == -1)
-			redi->ret_code = DUP_ERR;
-	}
+	redi->fd_before = fd;
 }

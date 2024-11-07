@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/05/09 10:47:06 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/14 17:06:45 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/05 18:37:54 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -71,16 +71,6 @@ int	ft_vars_len(const char *s)
 			i++;
 	}
 	return (len);
-}
-
-char	*str_init_in_normal_case(const char *s)
-{
-	char	*str;
-
-	str = (char *)malloc(sizeof(char) * (ft_strlen(s) + 1));
-	if (!str)
-		return NULL;
-	return (str);
 }
 
 void	handle_nwline_in_norm_case(char *str, int *i, int *j)

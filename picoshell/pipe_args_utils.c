@@ -6,7 +6,7 @@
 /*   By: francema <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2024/04/30 15:24:35 by fmartini          #+#    #+#             */
-/*   Updated: 2024/10/15 16:04:52 by francema         ###   ########.fr       */
+/*   Updated: 2024/11/07 18:44:26 by francema         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -18,7 +18,7 @@ int	ft_args_counting_utils2(char *s, char c, int i)
 
 	t = c;
 	i++;// skip first " or '
-	while (s[i] != t && s[i] != '\0')
+	while (s[i] && s[i] != t)
 		i++;// skip chars till last "
 	i++;
 	return (i);
@@ -26,32 +26,35 @@ int	ft_args_counting_utils2(char *s, char c, int i)
 
 int	ft_arg_count_norm_case(char *s, int *n_args, int i)
 {
-	while (s[i] && s[i] != '\'' && s[i] != '"' && s[i] != '|' && *n_args != 0)
-		i++;//skip next args
-	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '|')
-		i++;//skip first arg(cmd name)
-	if (s[i] != '|')
+	while (s[i] && !ft_is_space(s[i])
+			&& s[i] != '|'
+			&& s[i] != '"'
+			&& s[i] != '\'')
+		i++;
+	if (s[i] == '\n')
+		i++;
+	if (s[i] != '|' && !ft_is_space(s[i - 1]))
+		(*n_args)++;//if string ended with a word
+	else if (ft_is_space(s[i - 1]))
 		(*n_args)++;
 	return (i);
 }
 
 int	ft_args_counting_utils(char *s, int i, int *n_args)
 {
-	while (s[i] && s[i] != ' ' && s[i] != '\t' && s[i] != '|')//skip args
+	while (s[i] && !ft_is_space(s[i]) && s[i] != '|')//skip args
 	{
 		if (s[i] == '"')
 		{
 			i = ft_args_counting_utils2(s, '"', i);
-			if (s[i] == '\0')
-				(*n_args)++;
+			(*n_args)++;
 		}
 		if (s[i] == '\'')
 		{
 			i = ft_args_counting_utils2(s, '\'', i);
-			if (s[i] == '\0')
-				(*n_args)++;
+			(*n_args)++;
 		}
-		if (s[i] && s[i] != ' ' && s[i] != '\t')
+		if (s[i] && !ft_is_space(s[i]))
 			i = ft_arg_count_norm_case(s, n_args, i);
 	}
 	return (i);
@@ -70,8 +73,6 @@ int	ft_args_counting(t_tok *tok, int i)
 	{
 		i = ft_skip_spaces(line, i);
 		i = ft_args_counting_utils(line, i, &n_args_str);
-		if (line[i] && line[i] != '|')
-			n_args_str++;
 	}
 	if (ft_only_spaces(line))
 		n_args_str = 1;
